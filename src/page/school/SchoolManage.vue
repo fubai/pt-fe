@@ -12,6 +12,8 @@
       <el-table-column prop="linkerPhone" label="联系人电话"></el-table-column>
       <el-table-column prop="post" label="联系人职务"></el-table-column>
       <el-table-column prop="status" label="状态" :formatter="statusFormatter"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="218">
         <template slot-scope="scope">
           <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>
