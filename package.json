@@ -1,0 +1,35 @@
+{
+  "name": "pt-fe",
+  "version": "0.0.1",
+  "private": true,
+  "description": "PT web frontend",
+  "author": "fubai",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fubai/pt-fe.git"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "element-ui": "^2.4.5",
+    "es6-promise": "^4.2.4",
+    "js-md5": "^0.7.3",
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0-rc.10",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
+    "@vue/cli-service": "^3.0.0-rc.10",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.5.16"
+  }
+}
