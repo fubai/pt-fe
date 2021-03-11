@@ -7,6 +7,7 @@
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="schools" :stripe="true" size="mini" v-loading="loading">
+      <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="name" label="学校名称"></el-table-column>
       <el-table-column prop="linker" label="联系人"></el-table-column>
       <el-table-column prop="linkerPhone" label="联系人电话"></el-table-column>
