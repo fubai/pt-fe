@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { calcPage } from '@/util'
 
 export default {
