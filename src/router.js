@@ -5,6 +5,7 @@ import MenuManage from './page/system/MenuManage'
 import RoleManage from './page/system/RoleManage'
 import AdminManage from './page/system/AdminManage'
 import DictionaryManage from './page/dictionary/DictionaryManage'
+import SchoolManage from './page/school/SchoolManage'
 
 Vue.use(Router)
 
@@ -14,6 +15,7 @@ export default new Router({
     { path: '/system/menu-manage', component: MenuManage },
     { path: '/system/role-manage', component: RoleManage },
     { path: '/system/admin-manage', component: AdminManage },
-    { path: '/system/dictionary-manage', component: DictionaryManage }
+    { path: '/system/dictionary-manage', component: DictionaryManage },
+    { path: '/school/school-manage', component: SchoolManage }
   ]
 })
