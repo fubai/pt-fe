@@ -115,6 +115,8 @@ export default {
         this.query.page = pageData.page
         this.query.total = pageData.total
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
     toAdd () {
