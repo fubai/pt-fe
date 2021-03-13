@@ -24,7 +24,7 @@
     </el-table>
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
 
-    <el-dialog :title="formTitle" :visible.sync="showForm" @close="resetForm" append-to-body>
+    <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="学校名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入学校名称" :maxlength="40"></el-input>
@@ -108,7 +108,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/schools?page=${page}&limit=${this.query.limit}&name=${this.query.name}`
+        url: `/web/api/schools?page=${page}&limit=${this.query.limit}&name=${this.query.name || ''}`
       }).then((res) => {
         let pageData = res.data.data
         this.schools = pageData.data
@@ -129,6 +129,9 @@ export default {
         post: '',
         status: 'ENABLE'
       }
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
+      })
       this.showForm = true
     },
     toUpdate (row) {
@@ -141,6 +144,9 @@ export default {
         post: row.post,
         status: row.status
       }
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
+      })
       this.showForm = true
     },
     toDelete (row) {
@@ -180,9 +186,6 @@ export default {
           return false
         }
       })
-    },
-    resetForm () {
-      this.$refs.form.resetFields()
     },
     statusFormatter (row, column, cellValue) {
       return cellValue === 'ENABLE' ? '已开通' : '未开通'

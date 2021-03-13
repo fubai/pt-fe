@@ -25,7 +25,7 @@
     </el-table>
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
 
-    <el-dialog :title="formTitle" :visible.sync="showForm" @close="resetForm" append-to-body>
+    <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="登录账号" prop="username">
           <el-input v-model="form.username" placeholder="请输入登录账号" :maxlength="40" :readonly="!!currentUpdateAdminId"></el-input>
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import md5 from 'js-md5'
 import { calcPage } from '@/util'
 
@@ -128,6 +127,9 @@ export default {
       this.currentUpdateAdminId = 0
       this.form = {username: '', password: '', mobile: '', roleId: null}
       this.showForm = true
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
+      })
       this.loadRole()
     },
     toUpdate (row) {
@@ -135,6 +137,9 @@ export default {
       this.currentUpdateAdminId = row.adminId
       this.form = {username: row.username, password: '', mobile: row.mobile, roleId: row.roleId}
       this.showForm = true
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
+      })
       this.loadRole()
     },
     toDelete (row) {
@@ -184,9 +189,6 @@ export default {
       }).then(() => {
         this.load(this.query.page)
       })
-    },
-    resetForm () {
-      this.$refs.form.resetFields()
     },
     statusFormatter (row, column, cellValue) {
       return cellValue === 'ENABLE' ? '启用' : '禁用'

@@ -12,7 +12,7 @@
         </div>
       </span>
     </el-tree>
-    <el-dialog :title="formTitle" :visible.sync="showForm" @close="resetForm">
+    <el-dialog :title="formTitle" :visible.sync="showForm">
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="上级菜单" prop="parentName">
           <el-input v-model="form.parentName" :readonly="true"></el-input>
@@ -132,6 +132,9 @@ export default {
       this.formTitle = !parentId ? '添加一级菜单' : '添加二级菜单'
       this.currentUpdateMenuId = 0
       this.form = {parentId: parentId || '', parentName: parentName || '', name: '', address: null, icon: null, param: null, orderNo: null}
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
+      })
       this.showForm = true
     },
     toUpdate (menu) {
@@ -139,6 +142,9 @@ export default {
       this.formTitle = '修改菜单'
       this.currentUpdateMenuId = menu.menuId
       this.form = {parentId: menu.parentId, parentName: menu.parentName, name: menu.name, address: menu.address, icon: menu.icon, param: menu.param, orderNo: menu.orderNo}
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
+      })
       this.showForm = true
     },
     toDelete (menu) {
@@ -183,9 +189,6 @@ export default {
           return false
         }
       })
-    },
-    resetForm () {
-      this.$refs.form.resetFields()
     },
     getSelection () {
       let selection = {}

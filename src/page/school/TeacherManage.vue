@@ -24,7 +24,7 @@
     </el-table>
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
 
-    <el-dialog :title="formTitle" :visible.sync="showForm" @close="resetForm" append-to-body>
+    <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="老师姓名" prop="name">
           <el-input v-model="form.name" placeholder="请输入老师姓名" :maxlength="40"></el-input>
@@ -101,7 +101,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/teachers?page=${page}&limit=${this.query.limit}&name=${this.query.name}&phone=${this.query.phone}`
+        url: `/web/api/teachers?page=${page}&limit=${this.query.limit}&name=${this.query.name || ''}&phone=${this.query.phone || ''}`
       }).then((res) => {
         let pageData = res.data.data
         this.teachers = pageData.data
@@ -116,7 +116,7 @@ export default {
       this.seachingSchool = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/schools?page=1&limit=10&name=${query}`
+        url: `/web/api/schools?page=1&limit=10&name=${query || ''}`
       }).then((res) => {
         this.schools = res.data.data.data
         this.seachingSchool = false
@@ -134,6 +134,9 @@ export default {
           phone: '',
           schoolId: ''
         }
+        this.$nextTick(() => {
+          this.$refs.form.clearValidate()
+        })
         this.showForm = true
       })
     },
@@ -146,6 +149,9 @@ export default {
           phone: row.phone,
           schoolId: row.schoolId
         }
+        this.$nextTick(() => {
+          this.$refs.form.clearValidate()
+        })
         this.showForm = true
       })
     },
@@ -184,9 +190,6 @@ export default {
           return false
         }
       })
-    },
-    resetForm () {
-      this.$refs.form.resetFields()
     }
   }
 }
