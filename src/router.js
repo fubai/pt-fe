@@ -7,6 +7,7 @@ import AdminManage from './page/system/AdminManage'
 import DictionaryManage from './page/dictionary/DictionaryManage'
 import SchoolManage from './page/school/SchoolManage'
 import TeacherManage from './page/school/TeacherManage'
+import ClazzManage from './page/school/ClazzManage'
 
 Vue.use(Router)
 
@@ -18,6 +19,7 @@ export default new Router({
     { path: '/system/admin-manage', component: AdminManage },
     { path: '/system/dictionary-manage', component: DictionaryManage },
     { path: '/school', component: SchoolManage },
-    { path: '/teacher', component: TeacherManage }
+    { path: '/teacher', component: TeacherManage },
+    { path: '/clazz', component: ClazzManage }
   ]
 })
