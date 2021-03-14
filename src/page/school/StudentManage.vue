@@ -1,7 +1,6 @@
 <template>
   <div>
     <div style="text-align:right;padding-bottom:10px;">
-      <p style="float:left;color:#8492a6">{{clazz.schoolName}} {{clazz.gradeName}} {{clazz.name}}</p>
       <el-button size="small" @click="toAdd" type="primary" class="left">添加学生</el-button>
     </div>
     <el-table :data="students" :stripe="true" border size="mini" v-loading="loading">

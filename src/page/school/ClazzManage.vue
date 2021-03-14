@@ -2,8 +2,8 @@
   <div>
     <div class="app-toolbar">
       <el-button size="small" @click="toAdd" type="primary" class="left">添加班级</el-button>
-      <label>所属学校</label>
-      <el-select size="small" placeholder="请选择所属学校" v-model="query.schoolId" filterable remote :remote-method="searchSchool1" :loading="seachingSchool1" clearable style="width:100%">
+      <label>学校</label>
+      <el-select size="small" placeholder="请选择学校" v-model="query.schoolId" filterable remote :remote-method="searchSchool1" :loading="seachingSchool1" clearable style="width:100%">
         <el-option v-for="school in schools1" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
       </el-select>
       <label>班级名称</label>
@@ -12,10 +12,15 @@
     </div>
     <el-table :data="clazzs" :stripe="true" size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
+      <el-table-column prop="schoolName" label="学校"></el-table-column>
       <el-table-column prop="gradeName" label="年级"></el-table-column>
       <el-table-column prop="name" label="班级"></el-table-column>
       <el-table-column prop="teacherName" label="老师"></el-table-column>
-      <el-table-column prop="schoolName" label="所属学校"></el-table-column>
+      <el-table-column prop="studentCount" label="学生数量">
+        <template slot-scope="scope">
+          <el-link @click="toManageStudent(scope.row)" type="primary" size="small">{{scope.row.studentCount}}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
       <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="238">
@@ -30,8 +35,8 @@
 
     <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
-        <el-form-item label="所属学校" prop="schoolId">
-          <el-select v-model="form.schoolId" placeholder="请选择所属学校" filterable remote :remote-method="searchSchool2" :loading="seachingSchool2" style="width:100%" :disabled="!!currentUpdateClazzId">
+        <el-form-item label="学校" prop="schoolId">
+          <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool2" :loading="seachingSchool2" style="width:100%" :disabled="!!currentUpdateClazzId">
             <el-option v-for="school in schools2" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
           </el-select>
         </el-form-item>
@@ -58,11 +63,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="学生管理" :visible.sync="showStudentDialog" width="86%" append-to-body>
+    <el-dialog :title="`${clazzOfStudent.schoolName} ${clazzOfStudent.gradeName} ${clazzOfStudent.name}`" :visible.sync="showStudentDialog" width="86%" center append-to-body @close="load(query.page)">
       <student-manage :clazz="clazzOfStudent" ref="studentManage"></student-manage>
-      <div slot="footer">
-        <el-button @click="showStudentDialog = false">关 闭</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
