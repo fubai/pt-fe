@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div v-loading="uploading">
     <div style="text-align:right;padding-bottom:10px;">
       <el-button size="small" @click="toAdd" type="primary" class="left">添加学生</el-button>
+      <el-upload :action="uploadExcelUrl" :with-credentials="true" :show-file-list="false" :data="{ schoolId: clazz.schoolId, clazzId: clazz.clazzId }" accept=".xls,.xlsx" :before-upload="beforeUpload" :on-success="onUploadSuccess" :on-error="onUploadFail" class="student-upload">
+        <el-button size="small" type="primary">批量上传学生信息</el-button>
+      </el-upload>
     </div>
     <el-table :data="students" :stripe="true" border size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
@@ -42,6 +45,7 @@
 </template>
 
 <script>
+import { api } from '@/config'
 import Vue from 'vue'
 
 export default {
@@ -51,6 +55,8 @@ export default {
   },
   data () {
     return {
+      uploadExcelUrl: `${api}/web/api/students/batch`,
+      uploading: false,
       birthdayPickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now()
@@ -167,7 +173,33 @@ export default {
     birthdayFormatter (row, column, cellValue) {
       let age = Vue.biz.calcAge(new Date(cellValue))
       return `${cellValue.substring(0, 10)} (${age}岁)`
+    },
+    beforeUpload () {
+      this.uploading = true
+    },
+    onUploadSuccess () {
+      this.uploading = false
+      this.load(1)
+    },
+    onUploadFail (err) {
+      this.uploading = false
+
+      let message = err.message
+      if (!message) {
+        console.dir(err)
+        return
+      }
+
+      try {
+          this.$message.error(JSON.parse(message).message)
+      } catch (e) {
+        console.dir(e)
+      }
     }
   }
 }
 </script>
+
+<style>
+.student-upload{display:inline-block;margin-left:10px;}
+</style>
