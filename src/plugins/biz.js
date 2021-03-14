@@ -11,15 +11,22 @@ export default {
           method: 'get',
           url: `/app/api/dictionaries/${dictionaryId}`
         }).then((res) => {
-          let dictionary = res.data.data || {}
-          let items = dictionary.items || []
-          if (dictionary.keyType === 'INTEGER') {
-            for (let i = items.length - 1; i >= 0; i--) {
-              items[i].key = parseInt(items[i].key, 10)
-            }
-          }
-          success(items)
+          success((res.data.data || {}).items || [])
         })
+      },
+
+      calcAge (birthday) {
+        const now = new Date()
+        let y = now.getFullYear() - birthday.getFullYear()
+        let m = now.getMonth() - birthday.getMonth() 
+        let d = now.getDate() - birthday.getDate()
+        if (d < 0) {
+          m--
+        }
+        if (m < 0) { // 借一年 12个月
+          y--
+        }
+        return y
       }
 
     }

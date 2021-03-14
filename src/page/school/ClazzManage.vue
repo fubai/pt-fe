@@ -12,14 +12,15 @@
     </div>
     <el-table :data="clazzs" :stripe="true" size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
-      <el-table-column prop="grade" label="年级" :formatter="gradeFormatter"></el-table-column>
+      <el-table-column prop="gradeName" label="年级"></el-table-column>
       <el-table-column prop="name" label="班级"></el-table-column>
       <el-table-column prop="teacherName" label="老师"></el-table-column>
       <el-table-column prop="schoolName" label="所属学校"></el-table-column>
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
       <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="218">
+      <el-table-column fixed="right" label="操作" width="238">
         <template slot-scope="scope">
+          <el-button @click="toManageStudent(scope.row)" type="primary" size="small">学生管理</el-button>
           <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>
           <el-button @click="toDelete(scope.row)" type="danger" size="small">删除</el-button>
         </template>
@@ -56,6 +57,13 @@
         <el-button type="primary" @click="doSave">保 存</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="学生管理" :visible.sync="showStudentDialog" width="86%" append-to-body>
+      <student-manage :clazz="clazzOfStudent" ref="studentManage"></student-manage>
+      <div slot="footer">
+        <el-button @click="showStudentDialog = false">关 闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -63,9 +71,13 @@
 import Vue from 'vue'
 import { calcPage } from '@/util'
 import { DICTIONARY_ID_GRADE } from '@/config'
+import StudentManage from './StudentManage'
 
 export default {
   name: 'clazz-manage',
+  components: {
+    StudentManage
+  },
   data () {
     return {
       loading: false,
@@ -98,7 +110,9 @@ export default {
         name: [{ required: true, message: '请输入班级名称', trigger: 'blur' }],
         teacherId: [{ required: true, message: '请选择老师', trigger: 'change' }]
       },
-      currentUpdateClazzId: 0
+      currentUpdateClazzId: 0,
+      showStudentDialog: false,
+      clazzOfStudent: {}
     }
   },
   created () {
@@ -116,13 +130,26 @@ export default {
         url: `/web/api/clazzs?page=${page}&limit=${this.query.limit}&name=${this.query.name || ''}&schoolId=${this.query.schoolId || ''}`
       }).then((res) => {
         let pageData = res.data.data
-        this.clazzs = pageData.data
+        let clazzs = pageData.data
+        for (let i = clazzs.length - 1; i >= 0; i--) {
+          clazzs[i].gradeName = this.getGradeName(clazzs[i].grade)
+        }
+        this.clazzs = clazzs
         this.query.page = pageData.page
         this.query.total = pageData.total
         this.loading = false
       }).catch(() => {
         this.loading = false
       })
+    },
+    getGradeName (gradeValue) {
+      for (let i = 0; i < this.grades.length; i++) {
+        let grade = this.grades[i]
+        if (grade.key === gradeValue) {
+          return grade.label
+        }
+      }
+      return gradeValue
     },
     searchSchool1 (query, callback) {
       this.searchSchool(1, query, callback)
@@ -226,14 +253,12 @@ export default {
         }
       })
     },
-    gradeFormatter (row, column, cellValue) {
-      for (let i = 0; i < this.grades.length; i++) {
-        let grade = this.grades[i]
-        if (grade.key === cellValue) {
-          return grade.label
-        }
-      }
-      return cellValue
+    toManageStudent (clazz) {
+      this.clazzOfStudent = clazz
+      this.showStudentDialog = true
+      this.$nextTick(() => {
+        this.$refs.studentManage.load()
+      })
     }
   }
 }
