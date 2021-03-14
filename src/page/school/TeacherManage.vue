@@ -10,9 +10,11 @@
     </div>
     <el-table :data="teachers" :stripe="true" size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
+      <el-table-column prop="schoolName" label="学校"></el-table-column>
       <el-table-column prop="name" label="老师姓名"></el-table-column>
       <el-table-column prop="phone" label="老师手机"></el-table-column>
-      <el-table-column prop="schoolName" label="所属学校"></el-table-column>
+      <el-table-column prop="clazzCount" label="班级数量"></el-table-column>
+      <el-table-column prop="studentCount" label="学生数量"></el-table-column>
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
       <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="218">
@@ -32,8 +34,8 @@
         <el-form-item label="老师手机" prop="phone">
           <el-input v-model="form.phone" placeholder="请输入老师手机" :maxlength="20"></el-input>
         </el-form-item>
-        <el-form-item label="所属学校" prop="schoolId">
-          <el-select v-model="form.schoolId" placeholder="请选择所属学校" filterable remote :remote-method="searchSchool" :loading="seachingSchool" style="width:100%">
+        <el-form-item label="学校" prop="schoolId">
+          <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool" :loading="seachingSchool" style="width:100%">
             <el-option v-for="school in schools" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
           </el-select>
         </el-form-item>
