@@ -9,3 +9,4 @@ if (href.indexOf('localhost:9991') !== -1) {
 }
 
 export let DICTIONARY_ID_GRADE = 1
+export let DICTIONARY_ID_TRAIN = 2

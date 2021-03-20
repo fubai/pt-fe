@@ -9,6 +9,7 @@ import SchoolManage from './page/school/SchoolManage'
 import TeacherManage from './page/school/TeacherManage'
 import ClazzManage from './page/school/ClazzManage'
 import FieldManage from './page/school/FieldManage'
+import CourseManage from './page/course/CourseManage'
 
 Vue.use(Router)
 
@@ -22,6 +23,7 @@ export default new Router({
     { path: '/school', component: SchoolManage },
     { path: '/teacher', component: TeacherManage },
     { path: '/clazz', component: ClazzManage },
-    { path: '/field', component: FieldManage }
+    { path: '/field', component: FieldManage },
+    { path: '/course', component: CourseManage }
   ]
 })
