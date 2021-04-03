@@ -6,9 +6,9 @@
           <el-input placeholder="请输入设备编号" v-model="scope.row.num" size="mini"></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="sn" label="S/N">
+      <el-table-column prop="mac" label="蓝牙MAC地址">
         <template slot-scope="scope">
-          <el-input placeholder="请输入设备S/N" v-model="scope.row.sn" size="mini"></el-input>
+          <el-input placeholder="请输入设备的蓝牙MAC地址" v-model="scope.row.mac" size="mini"></el-input>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="78">
@@ -50,7 +50,7 @@ export default {
       }).then((res) => {
         let equipments = res.data.data || []
         for (let i = equipments.length - 1; i >= 0; i--) {
-          equipments[i].key = equipments[i].sn
+          equipments[i].key = equipments[i].mac
         }
 
         this.equipments = equipments
@@ -70,29 +70,29 @@ export default {
     save () {
       let equipments = this.equipments || []
       let numMap = {}
-      let snMap = {}
+      let macMap = {}
       for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i]
         let num = equipment.num
-        let sn = equipment.sn
+        let mac = equipment.mac
         if (!num) {
           this.$message.error(`请填写设备编号`)
           return
         }
-        if (!sn) {
-          this.$message.error(`请填写设备S/N`)
+        if (!mac) {
+          this.$message.error(`请填写设备的蓝牙MAC地址`)
           return
         }
         if (numMap[num]) {
           this.$message.error(`设备编号重复：${num}`)
           return
         }
-        if (snMap[sn]) {
-          this.$message.error(`设备S/N重复：${sn}`)
+        if (macMap[mac]) {
+          this.$message.error(`设备蓝牙MAC地址重复：${mac}`)
           return
         }
         numMap[num] = true
-        snMap[sn] = true
+        macMap[mac] = true
       }
 
       this.$http.request({
