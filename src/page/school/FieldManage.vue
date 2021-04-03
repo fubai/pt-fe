@@ -14,6 +14,7 @@
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="schoolName" label="学校"></el-table-column>
       <el-table-column prop="name" label="场地"></el-table-column>
+      <el-table-column prop="bluetoothGatewayMac" label="蓝牙网关MAC地址"></el-table-column>
       <el-table-column prop="bgImageUrl" label="背景图"></el-table-column>
       <el-table-column prop="equipmentCount" label="设备数量">
         <template slot-scope="scope">
@@ -42,6 +43,10 @@
         <el-form-item label="场地" prop="name">
           <el-input v-model="form.name" placeholder="请输入场地名称" :maxlength="40"></el-input>
         </el-form-item>
+        <el-form-item label="蓝牙网关MAC地址" prop="bluetoothGatewayMac">
+          <el-input v-model="form.bluetoothGatewayMac" placeholder="请输入蓝牙网关MAC地址" :maxlength="20"></el-input>
+        </el-form-item>
+
         <el-form-item label="背景图" prop="bgImageUrl">
           <el-input v-model="form.bgImageUrl" placeholder="请输入背景图地址" :maxlength="200"></el-input>
         </el-form-item>
@@ -85,11 +90,13 @@ export default {
       form: {
         schoolId: null,
         name: '',
+        bluetoothGatewayMac: '',
         bgImageUrl: ''
       },
       formRule: {
         schoolId: [{ required: true, message: '请选择学校', trigger: 'change' }],
-        name: [{ required: true, message: '请输入场地名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入场地名称', trigger: 'blur' }],
+        bluetoothGatewayMac: [{ required: true, message: '请输入蓝牙网关MAC地址', trigger: 'blur' }]
       },
       currentUpdateFieldId: 0
     }
@@ -140,6 +147,7 @@ export default {
         this.form = {
           schoolId: null,
           name: '',
+          bluetoothGatewayMac: '',
           bgImageUrl: ''
         }
         this.$nextTick(() => {
@@ -155,6 +163,7 @@ export default {
       this.form = {
         schoolId: row.schoolId,
         name: row.name,
+        bluetoothGatewayMac: row.bluetoothGatewayMac,
         bgImageUrl: row.bgImageUrl
       }
       this.$nextTick(() => {
@@ -187,6 +196,7 @@ export default {
             data: JSON.stringify({
               schoolId: this.form.schoolId,
               name: this.form.name,
+              bluetoothGatewayMac: this.form.bluetoothGatewayMac,
               bgImageUrl: this.form.bgImageUrl
             })
           }).then(() => {
