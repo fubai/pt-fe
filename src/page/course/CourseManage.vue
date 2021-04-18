@@ -8,6 +8,7 @@
     </div>
     <el-table :data="courses" :stripe="true" size="mini" v-loading="loading">
       <el-table-column prop="name" label="课程名称"></el-table-column>
+      <el-table-column prop="desc" label="课程描述" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="durationText" label="课程时长"></el-table-column>
       <el-table-column prop="items" label="课程环节">
         <template slot-scope="scope">
@@ -36,6 +37,9 @@
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-width="80px">
         <el-form-item label="课程名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入课程名称"></el-input>
+        </el-form-item>
+        <el-form-item label="课程描述" prop="desc">
+          <el-input v-model="form.desc" placeholder="请输入课程描述"></el-input>
         </el-form-item>
       </el-form>
 
@@ -89,10 +93,12 @@ export default {
       formTitle: '添加课程',
       form: {
         name: '',
+        desc: '',
         items: []
       },
       formRule: {
-        name: [{ required: true, message: '请输入课程名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入课程名称', trigger: 'blur' }],
+        desc: [{ required: true, message: '请输入课程描述', trigger: 'blur' }]
       },
       currentUpdateCourseId: 0
     }
@@ -125,13 +131,13 @@ export default {
     },
     toAdd () {
       this.formTitle = '添加课程'
-      this.form = { name: '', items: [] }
+      this.form = { name: '', desc: '', items: [] }
       this.currentUpdateCourseId = 0
       this.showForm = true
     },
     toUpdate (row) {
       this.formTitle = '修改课程'
-      this.form = { name: row.name, items: row.items || [] }
+      this.form = { name: row.name, desc: row.desc, items: row.items || [] }
       this.currentUpdateCourseId = row.courseId
       this.showForm = true
     },
@@ -166,6 +172,7 @@ export default {
             url: courseId === 0 ? '/web/api/courses' : `/web/api/courses/${courseId}`,
             data: JSON.stringify({
               name: this.form.name,
+              desc: this.form.desc || null,
               items: itemList
             })
           }).then(() => {
