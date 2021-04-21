@@ -8,6 +8,7 @@
     </div>
     <el-table :data="students" :stripe="true" border size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
+      <el-table-column prop="num" label="学号"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column prop="gender" label="性别" :formatter="genderFormatter"></el-table-column>
       <el-table-column prop="birthday" label="生日" :formatter="birthdayFormatter"></el-table-column>
