@@ -9,8 +9,8 @@
     <el-table :data="courses" :stripe="true" size="mini" v-loading="loading">
       <el-table-column prop="name" label="课程名称"></el-table-column>
       <el-table-column prop="desc" label="课程描述" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column prop="durationText" label="课程时长"></el-table-column>
-      <el-table-column prop="items" label="课程环节">
+      <el-table-column prop="durationText" label="课程时长" width="80px"></el-table-column>
+      <el-table-column prop="items" label="课程环节" width="80px">
         <template slot-scope="scope">
           <el-popover title="课程环节" width="360" trigger="hover" placement="right">
             <el-table :data="scope.row.items" :stripe="true" border size="mini">
@@ -22,8 +22,8 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" sortable></el-table-column>
-      <el-table-column prop="updateTime" label="最后更新时间" sortable></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="145px" sortable></el-table-column>
+      <el-table-column prop="updateTime" label="最后更新时间" width="145px" sortable></el-table-column>
       <el-table-column fixed="right" label="操作" width="158">
         <template slot-scope="scope">
           <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>

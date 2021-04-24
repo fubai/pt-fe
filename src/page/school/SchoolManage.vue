@@ -9,13 +9,13 @@
     <el-table :data="schools" :stripe="true" size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="name" label="学校名称"></el-table-column>
-      <el-table-column prop="linker" label="联系人"></el-table-column>
-      <el-table-column prop="linkerPhone" label="联系人电话"></el-table-column>
-      <el-table-column prop="post" label="联系人职务"></el-table-column>
-      <el-table-column prop="status" label="状态" :formatter="statusFormatter"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="218">
+      <el-table-column prop="linker" label="联系人" width="100px"></el-table-column>
+      <el-table-column prop="linkerPhone" label="联系人电话" width="110px"></el-table-column>
+      <el-table-column prop="post" label="联系人职务" width="90px"></el-table-column>
+      <el-table-column prop="status" label="状态" :formatter="statusFormatter" width="60px"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="145px"></el-table-column>
+      <el-table-column prop="updateTime" label="最后修改时间" width="145px"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="145">
         <template slot-scope="scope">
           <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>
           <el-button @click="toDelete(scope.row)" type="danger" size="small">删除</el-button>

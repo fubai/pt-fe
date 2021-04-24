@@ -13,16 +13,16 @@
     <el-table :data="clazzs" :stripe="true" size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="schoolName" label="学校"></el-table-column>
-      <el-table-column prop="gradeName" label="年级"></el-table-column>
-      <el-table-column prop="name" label="班级"></el-table-column>
-      <el-table-column prop="teacherName" label="老师"></el-table-column>
-      <el-table-column prop="studentCount" label="学生数量">
+      <el-table-column prop="gradeName" label="年级" width="60px"></el-table-column>
+      <el-table-column prop="name" label="班级" width="80px"></el-table-column>
+      <el-table-column prop="teacherName" label="老师" width="120px"></el-table-column>
+      <el-table-column prop="studentCount" label="学生数量" width="80px">
         <template slot-scope="scope">
           <el-link @click="toManageStudent(scope.row)" type="primary" size="small">{{scope.row.studentCount}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="145px"></el-table-column>
+      <el-table-column prop="updateTime" label="最后修改时间" width="145px"></el-table-column>
       <el-table-column fixed="right" label="操作" width="238">
         <template slot-scope="scope">
           <el-button @click="toManageStudent(scope.row)" type="primary" size="small">学生管理</el-button>

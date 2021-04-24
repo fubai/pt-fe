@@ -14,15 +14,15 @@
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="schoolName" label="学校"></el-table-column>
       <el-table-column prop="name" label="场地"></el-table-column>
-      <el-table-column prop="bluetoothGatewayMac" label="蓝牙网关MAC地址"></el-table-column>
+      <el-table-column prop="bluetoothGatewayMac" label="蓝牙网关MAC地址" width="120px"></el-table-column>
       <el-table-column prop="bgImageUrl" label="背景图"></el-table-column>
-      <el-table-column prop="equipmentCount" label="设备数量">
+      <el-table-column prop="equipmentCount" label="设备数量" width="80px">
         <template slot-scope="scope">
           <el-link @click="toManageEquipment(scope.row)" type="primary" size="small">{{scope.row.equipmentCount}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="145px"></el-table-column>
+      <el-table-column prop="updateTime" label="最后修改时间" width="145px"></el-table-column>
       <el-table-column fixed="right" label="操作" width="238">
         <template slot-scope="scope">
           <el-button @click="toManageEquipment(scope.row)" type="primary" size="small">设备管理</el-button>
