@@ -12,15 +12,19 @@
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="schoolName" label="学校"></el-table-column>
       <el-table-column prop="name" label="老师姓名"></el-table-column>
-      <el-table-column prop="phone" label="老师手机"></el-table-column>
-      <el-table-column prop="clazzCount" label="班级数量"></el-table-column>
-      <el-table-column prop="studentCount" label="学生数量"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="updateTime" label="最后修改时间"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="218">
+      <el-table-column prop="phone" label="老师手机" width="100px"></el-table-column>
+      <el-table-column prop="clazzCount" label="班级数量" width="80px"></el-table-column>
+      <el-table-column prop="studentCount" label="学生数量" width="80px"></el-table-column>
+      <el-table-column prop="accountStatus" label="账号状态" width="70px" :formatter="statusFormatter"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="145px"></el-table-column>
+      <el-table-column prop="updateTime" label="最后修改时间" width="145px"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="298">
         <template slot-scope="scope">
           <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>
           <el-button @click="toDelete(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button @click="toUpdatePassword(scope.row)" type="primary" size="small" v-if="scope.row.accountStatus === 'ENABLE'">修改密码</el-button>
+          <el-button @click="changeAccountStatus(scope.row)" type="danger" size="small" v-if="scope.row.accountStatus === 'ENABLE'">禁用</el-button>
+          <el-button @click="changeAccountStatus(scope.row)" type="primary" size="small" v-if="scope.row.accountStatus === 'DISABLE'">启用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,11 +49,24 @@
         <el-button type="primary" @click="doSave">保 存</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="修改老师账号密码" :visible.sync="showUpdatePasswordDialog" append-to-body>
+      <el-form :model="passwordForm" :rules="passwordFormRule" ref="passwordForm" :status-icon="true" label-position="top">
+        <el-form-item label="新密码" prop="password">
+          <el-input v-model="passwordForm.password" type="password" placeholder="请输入新密码" :maxlength="40"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="showUpdatePasswordDialog = false">取 消</el-button>
+        <el-button type="primary" @click="doUpdatePassword">修改密码</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { calcPage } from '@/util'
+import md5 from 'js-md5'
 
 export default {
   name: 'teacher-manage',
@@ -92,7 +109,16 @@ export default {
         ],
         schoolId: [{ required: true, message: '请选择学校', trigger: 'change' }]
       },
-      currentUpdateTeacherId: 0
+      currentUpdateTeacherId: 0,
+
+      showUpdatePasswordDialog: false,
+      passwordForm: {
+        password: ''
+      },
+      passwordFormRule: {
+        password: [{ required: true, message: '请输入新密码', trigger: 'blur' }]
+      },
+      currentUpdatePasswordTeacherId: 0
     }
   },
   created () {
@@ -192,6 +218,46 @@ export default {
           return false
         }
       })
+    },
+    toUpdatePassword(row) {
+      this.currentUpdatePasswordTeacherId = row.teacherId
+      this.passwordForm = { password: '' }
+      this.showUpdatePasswordDialog = true
+      this.$nextTick(() => {
+        this.$refs.passwordForm.clearValidate()
+      })
+    },
+    doUpdatePassword () {
+      this.$refs.passwordForm.validate((success) => {
+        if (success) {
+          let teacherId = this.currentUpdatePasswordTeacherId
+          this.$http.request({
+            method: 'put',
+            url: `/web/api/teachers/${teacherId}/password`,
+            data: JSON.stringify({
+              password: md5(this.passwordForm.password)
+            })
+          }).then(() => {
+            this.showUpdatePasswordDialog = false
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    changeAccountStatus (row) {
+      this.$http.request({
+        method: 'put',
+        url: `/web/api/teachers/${row.teacherId}/status`,
+        data: JSON.stringify({
+          accountStatus: row.accountStatus === 'ENABLE' ? 'DISABLE' : 'ENABLE'
+        })
+      }).then(() => {
+        this.load(this.query.page)
+      })
+    },
+    statusFormatter (row, column, cellValue) {
+      return cellValue === 'ENABLE' ? '启用' : '禁用'
     }
   }
 }
