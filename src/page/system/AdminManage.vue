@@ -9,11 +9,12 @@
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="bizAdmins" :stripe="true" size="mini" v-loading="loading">
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="145px"></el-table-column>
       <el-table-column prop="username" label="登录账号"></el-table-column>
       <el-table-column prop="mobile" label="联系电话"></el-table-column>
+      <el-table-column prop="schoolName" label="所属学校"></el-table-column>
       <el-table-column prop="roleName" label="角色"></el-table-column>
-      <el-table-column prop="status" label="状态" :formatter="statusFormatter"></el-table-column>
+      <el-table-column prop="status" label="状态" width="60px" :formatter="statusFormatter"></el-table-column>
       <el-table-column fixed="right" label="操作" width="218">
         <template slot-scope="scope">
           <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>
@@ -27,6 +28,11 @@
 
     <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
+        <el-form-item label="学校" prop="schoolId">
+          <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool" :loading="seachingSchool" :clearable="true" @clear="onClearSchool" style="width:100%">
+            <el-option v-for="school in schools" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="登录账号" prop="username">
           <el-input v-model="form.username" placeholder="请输入登录账号" :maxlength="40" :readonly="!!currentUpdateAdminId"></el-input>
         </el-form-item>
@@ -68,12 +74,15 @@ export default {
         username: '',
         mobile: ''
       },
+      seachingSchool: false,
+      schools: [],
       showForm: false,
       formTitle: '添加管理员',
       form: {
         username: '',
         password: '',
         mobile: '',
+        schoolId: null,
         roleId: null
       },
       formRule: {
@@ -114,6 +123,19 @@ export default {
         this.loading = false
       })
     },
+    searchSchool (query, callback) {
+      this.seachingSchool = true
+      this.$http.request({
+        method: 'get',
+        url: `/web/api/schools?page=1&limit=10&name=${query || ''}`
+      }).then((res) => {
+        this.schools = res.data.data.data
+        this.seachingSchool = false
+        callback()
+      }).catch(() => {
+        this.seachingSchool = false
+      })
+    },
     loadRole () {
       this.$http.request({
         method: 'get',
@@ -123,22 +145,26 @@ export default {
       })
     },
     toAdd () {
-      this.formTitle = '添加管理员'
-      this.currentUpdateAdminId = 0
-      this.form = {username: '', password: '', mobile: '', roleId: null}
-      this.showForm = true
-      this.$nextTick(() => {
-        this.$refs.form.clearValidate()
+      this.searchSchool('', () => {
+        this.formTitle = '添加管理员'
+        this.currentUpdateAdminId = 0
+        this.form = {username: '', password: '', mobile: '', roleId: null}
+        this.showForm = true
+        this.$nextTick(() => {
+          this.$refs.form.clearValidate()
+        })
       })
       this.loadRole()
     },
     toUpdate (row) {
-      this.formTitle = '修改管理员'
-      this.currentUpdateAdminId = row.adminId
-      this.form = {username: row.username, password: '', mobile: row.mobile, roleId: row.roleId}
-      this.showForm = true
-      this.$nextTick(() => {
-        this.$refs.form.clearValidate()
+      this.searchSchool(row.schoolName, () => {
+        this.formTitle = '修改管理员'
+        this.currentUpdateAdminId = row.adminId
+        this.form = {username: row.username, password: '', mobile: row.mobile, schoolId: row.schoolId, roleId: row.roleId}
+        this.showForm = true
+        this.$nextTick(() => {
+          this.$refs.form.clearValidate()
+        })
       })
       this.loadRole()
     },
@@ -168,6 +194,7 @@ export default {
               username: this.form.username,
               password: this.form.password ? md5(this.form.password) : '',
               mobile: this.form.mobile,
+              schoolId: this.form.schoolId,
               roleId: this.form.roleId
             })
           }).then(() => {
@@ -178,6 +205,9 @@ export default {
           return false
         }
       })
+    },
+    onClearSchool () {
+      this.form.schoolId = null
     },
     changeStatus (row) {
       this.$http.request({
