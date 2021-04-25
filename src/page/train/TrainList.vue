@@ -19,14 +19,15 @@
     </div>
     <el-table :data="trains" :stripe="true" size="mini" v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
-      <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter"></el-table-column>
+      <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
       <el-table-column prop="courseName" label="课程"></el-table-column>
       <el-table-column prop="schoolName" label="学校"></el-table-column>
-      <el-table-column prop="clazzName" label="班级">
+      <el-table-column prop="clazzName" label="班级" width="120px">
         <template slot-scope="scope">{{getClazzLabel(scope.row.clazzGrade, scope.row.clazzName)}}</template>
       </el-table-column>
-      <el-table-column prop="teacherName" label="老师"></el-table-column>
-      <el-table-column prop="studentCount" label="学生" :formatter="studentCountFormatter"></el-table-column>
+      <el-table-column prop="teacherName" label="老师" width="90px"></el-table-column>
+      <el-table-column prop="studentCount" label="学生" :formatter="studentCountFormatter" width="110px"></el-table-column>
+      <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
       <el-table-column fixed="right" label="操作" width="90">
         <template slot-scope="scope">
           <el-button @click="toView(scope.row)" type="text" size="small">查看</el-button>
@@ -113,7 +114,7 @@ export default {
         this.seachingSchool = false
       })
     },
-    onSchoolChange (schoolId) {
+    onSchoolChange () {
       this.query.clazzId = null
       this.query.teacherId = null
       this.loadClazz()
@@ -178,11 +179,14 @@ export default {
       }
       return gradeValue
     },
-    timeFormatter (row, column, cellValue) {
+    timeFormatter (row) {
       return `${row.startTime.substring(0, 16)} ~ ${row.endTime.substring(10, 16)}`
     },
-    studentCountFormatter (row, column, cellValue) {
-      return `0`
+    studentCountFormatter (row) {
+      return `${row.trainingStudentCount} / ${row.clazzStudentCount}`
+    },
+    courseFormatter (row) {
+      return `${(row.courseItemPositions || []).length} / ${row.courseItemCount || 0}`
     },
     toView (row) {
       console.dir(row)
