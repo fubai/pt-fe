@@ -35,15 +35,23 @@
       </el-table-column>
     </el-table>
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
+
+    <el-dialog title="学生训练详情" :visible.sync="showStudentDataDialog" width="96%" append-to-body>
+      <train-student-list :trainingId="trainingId"></train-student-list>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import { DICTIONARY_ID_GRADE } from '@/config'
+import TrainStudentList from './TrainStudentList'
 
 export default {
-  name: 'train-lilst',
+  name: 'train-list',
+  components: {
+    TrainStudentList
+  },
   data () {
     return {
       loading: false,
@@ -62,7 +70,9 @@ export default {
       teachers: [],
       grades: [],
       schoolClazzMap: {},
-      schoolTeacherMap: {}
+      schoolTeacherMap: {},
+      trainingId: 0,
+      showStudentDataDialog: false
     }
   },
   computed: {
@@ -189,7 +199,8 @@ export default {
       return `${(row.courseItemPositions || []).length} / ${row.courseItemCount || 0}`
     },
     toView (row) {
-      console.dir(row)
+      this.trainingId = row.trainingId
+      this.showStudentDataDialog = true
     }
   }
 }

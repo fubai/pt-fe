@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import TrainList from './page/train/TrainList'
+import TrainStudentList from './page/train/TrainStudentList'
 import SchoolManage from './page/school/SchoolManage'
 import TeacherManage from './page/school/TeacherManage'
 import ClazzManage from './page/school/ClazzManage'
@@ -17,6 +18,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     { path: '/train', component: TrainList },
+    { path: '/train-student', component: TrainStudentList },
     { path: '/school', component: SchoolManage },
     { path: '/teacher', component: TeacherManage },
     { path: '/clazz', component: ClazzManage },
