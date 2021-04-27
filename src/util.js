@@ -125,4 +125,14 @@ function formatTime (value) {
   return `${hour}:${minute}:${second}`
 }
 
-export { calcPage, getKey, hasClass, isArray, isObject, isString, isNumber, isDate, isRegExp, isFunction, isJSON, throwError, formatDate, formatTimestamp, formatTime }
+function int32ToBytes (value) {
+  let bytes = []
+  let i = 4
+  do {
+    bytes[--i] = value & 255
+    value = value >> 8
+  } while ( i )
+  return bytes
+}
+
+export { calcPage, getKey, hasClass, isArray, isObject, isString, isNumber, isDate, isRegExp, isFunction, isJSON, throwError, formatDate, formatTimestamp, formatTime, int32ToBytes }
