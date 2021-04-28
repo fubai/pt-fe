@@ -36,7 +36,7 @@
     <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="学校" prop="schoolId">
-          <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool2" :loading="seachingSchool2" style="width:100%" :disabled="!!currentUpdateClazzId">
+          <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool2" :loading="seachingSchool2" style="width:100%" :disabled="!!currentUpdateClazzId" @change="onSchoolChange">
             <el-option v-for="school in schools2" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
           </el-select>
         </el-form-item>
@@ -172,7 +172,11 @@ export default {
         this[`seachingSchool${num}`] = false
       })
     },
-    searchTeacher (query, callback) {
+    onSchoolChange () {
+      this.form.teacherId = null
+      this.searchTeacher()
+    },
+    searchTeacher (query) {
       this.seachingTeacher = true
       this.$http.request({
         method: 'get',
@@ -180,13 +184,11 @@ export default {
       }).then((res) => {
         this.teachers = res.data.data.data
         this.seachingTeacher = false
-        callback()
       }).catch(() => {
         this.seachingTeacher = false
       })
     },
     toAdd () {
-      this.searchTeacher()
       this.searchSchool2('', () => {
         this.formTitle = '添加班级'
         this.currentUpdateClazzId = 0
