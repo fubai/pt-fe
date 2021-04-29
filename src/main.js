@@ -7,6 +7,7 @@ import AjaxPlugin from './plugins/ajax'
 import BizPlugin from './plugins/biz'
 import App from './page/App'
 import Login from './page/Login'
+import StudentTrainDrawer from './page/train/StudentTrainDrawer'
 import './scss/element-variables.scss'
 
 require('es6-promise').polyfill()
@@ -14,6 +15,7 @@ require('es6-promise').polyfill()
 Vue.use(ElementUI)
 Vue.use(AjaxPlugin)
 Vue.use(BizPlugin)
+Vue.component('student-train-drawer', StudentTrainDrawer)
 Vue.config.productionTip = false
 
 
