@@ -11,10 +11,12 @@
       <el-select size="small" placeholder="请选择班级" v-model="query.clazzId" clearable>
         <el-option v-for="clazz in clazzs" :key="clazz.clazzId" :label="getClazzLabel(clazz.grade, clazz.name)" :value="clazz.clazzId"></el-option>
       </el-select>
-      <label>老师</label>
-      <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
-        <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
-      </el-select>
+      <template v-if="!admin.teacherId">
+        <label>老师</label>
+        <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
+          <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
+        </el-select>
+      </template>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="trains" :stripe="true" size="mini" v-loading="loading">
@@ -81,6 +83,9 @@ export default {
     },
     schoolId () {
       return this.admin.schoolId || this.query.schoolId
+    },
+    teacherId () {
+      return this.admin.teacherId || this.query.teacherId
     }
   },
   created () {
@@ -91,7 +96,9 @@ export default {
 
     if (this.schoolId) {
       this.loadClazz()
-      this.loadTeacher()
+      if (!this.teacherId) {
+        this.loadTeacher()
+      }
     } else {
       this.searchSchool()
     }
@@ -101,7 +108,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains?page=${page}&limit=${this.query.limit}&schoolId=${this.query.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.query.teacherId || ''}`
+        url: `/web/api/trains?page=${page}&limit=${this.query.limit}&schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}`
       }).then((res) => {
         let pageData = res.data.data
         this.trains = pageData.data
@@ -144,7 +151,7 @@ export default {
 
       this.$http.request({
         method: 'get',
-        url: `/web/api/clazzs?page=1&limit=99999999&schoolId=${schoolId}`
+        url: `/web/api/clazzs?page=1&limit=99999999&schoolId=${schoolId}&teacherId=${this.admin.teacherId || ''}`
       }).then((res) => {
         let clazzs = res.data.data.data
         for (let i = clazzs.length - 1; i >= 0; i--) {
