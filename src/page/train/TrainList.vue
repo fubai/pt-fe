@@ -27,7 +27,7 @@
       <el-table-column prop="clazzName" label="班级" width="120px">
         <template slot-scope="scope">{{getClazzLabel(scope.row.clazzGrade, scope.row.clazzName)}}</template>
       </el-table-column>
-      <el-table-column prop="teacherName" label="老师" width="90px"></el-table-column>
+      <el-table-column prop="teacherName" label="老师" width="90px" v-if="!admin.teacherId"></el-table-column>
       <el-table-column prop="studentCount" label="学生" :formatter="studentCountFormatter" width="110px"></el-table-column>
       <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
       <el-table-column fixed="right" label="操作" width="90">

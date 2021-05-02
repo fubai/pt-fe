@@ -7,7 +7,7 @@
       <el-table-column prop="clazzName" label="班级" width="120px">
         <template slot-scope="scope">{{getClazzLabel(scope.row.clazzGrade, scope.row.clazzName)}}</template>
       </el-table-column>
-      <el-table-column prop="teacherName" label="老师" width="90px"></el-table-column>
+      <el-table-column prop="teacherName" label="老师" width="90px" v-if="!admin.teacherId"></el-table-column>
       <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
     </el-table>
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
@@ -34,6 +34,11 @@ export default {
         total: 0
       },
       grades: []
+    }
+  },
+  computed: {
+    admin () {
+      return this.$store.state.admin
     }
   },
   watch: {
