@@ -17,7 +17,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/index', alias: ['/', '/index.html'], component: TrainList },
+    { path: '/', alias: ['/index', '/index.html'], component: TrainList },
     { path: '/train-student', component: TrainStudentList },
     { path: '/school', component: SchoolManage },
     { path: '/teacher', component: TeacherManage },
