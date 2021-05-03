@@ -3,7 +3,7 @@
     <el-drawer :title="stat.studentName" :visible.sync="show" :append-to-body="true" :withHeader="false" custom-class="drawer-train" size="35%">
       <div class="drawer-title">
         {{stat.studentName || ''}}
-        <el-tag>上课时长: {{stat.duration || ''}}</el-tag>
+        <el-tag>上课时长: {{getDurationText(stat.duration)}}</el-tag>
       </div>
       <div :class="showBottom !== false ? 'drawer-body' : 'drawer-body1'">
         <div ref="chart" style="width:100%;height:280px"></div>
@@ -267,6 +267,22 @@ export default {
     },
     toViewStudentTrainList () {
       this.showStudentTrainListDialog = true
+    },
+    getDurationText (duration) {
+      if (duration === 0) {
+        return '0秒'
+      }
+      if (!duration) {
+        return ''
+      }
+
+      if (duration < 60) {
+        return `${duration}秒`
+      }
+
+      let minute = Math.floor(duration / 60)
+      let second = duration % 60
+      return second != 0 ? `${minute}分钟 ${second}秒` : `${minute}分钟`
     }
   }
 }
