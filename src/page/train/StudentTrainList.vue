@@ -1,11 +1,11 @@
 <template>
   <div v-loading="loading">
-    <div class="app-toolbar">
+    <div class="app-toolbar" style="border-bottom:none;padding-right:0">
       <div class="item">
         <label>训练日期</label>
         <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
       </div>
-      <div v-if="!admin.teacherId">
+      <div class="item" v-if="!admin.teacherId">
         <label>老师</label>
         <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
           <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
@@ -13,7 +13,7 @@
       </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
-    <el-table :data="trains" :stripe="true" size="mini" @row-click="openDrawer" :row-style="{ cursor: 'pointer' }">
+    <el-table :data="trains" :stripe="true" size="mini" @row-click="openDrawer" border :row-style="{ cursor: 'pointer' }">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
       <el-table-column prop="courseName" label="课程"></el-table-column>
