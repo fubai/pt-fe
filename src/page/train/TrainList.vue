@@ -1,22 +1,34 @@
 <template>
   <div>
     <div class="app-toolbar">
-      <template v-if="!admin.schoolId">
+      <div class="item">
+        <label>训练日期</label>
+        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+      </div>
+      <div class="item" v-if="!admin.schoolId">
         <label>学校</label>
         <el-select size="small" placeholder="请选择学校" v-model="query.schoolId" filterable remote :remote-method="searchSchool" :loading="seachingSchool" @change="onSchoolChange" clearable>
           <el-option v-for="school in schools" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
         </el-select>
-      </template>
-      <label>班级</label>
-      <el-select size="small" placeholder="请选择班级" v-model="query.clazzId" clearable>
-        <el-option v-for="clazz in clazzs" :key="clazz.clazzId" :label="getClazzLabel(clazz.grade, clazz.name)" :value="clazz.clazzId"></el-option>
-      </el-select>
-      <template v-if="!admin.teacherId">
+      </div>
+      <div class="item">
+        <label>班级</label>
+        <el-select size="small" placeholder="请选择班级" v-model="query.clazzId" clearable>
+          <el-option v-for="clazz in clazzs" :key="clazz.clazzId" :label="getClazzLabel(clazz.grade, clazz.name)" :value="clazz.clazzId"></el-option>
+        </el-select>
+      </div>
+      <div class="item" v-if="!admin.teacherId">
         <label>老师</label>
         <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
           <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
         </el-select>
-      </template>
+      </div>
+      <div class="item">
+        <label>课程</label>
+        <el-select size="small" placeholder="请选择课程" v-model="query.courseId" clearable>
+          <el-option v-for="course in courses" :key="course.courseId" :label="course.name" :value="course.courseId"></el-option>
+        </el-select>
+      </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="trains" :stripe="true" size="mini" v-loading="loading">
@@ -47,6 +59,7 @@
 <script>
 import Vue from 'vue'
 import { DICTIONARY_ID_GRADE } from '@/config'
+import { formatDate } from '@/util'
 import TrainStudentList from './TrainStudentList'
 
 export default {
@@ -62,14 +75,17 @@ export default {
         page: 1,
         limit: 10,
         total: 0,
+        dates: [],
         schoolId: null,
         clazzId: null,
-        teacherId: null
+        teacherId: null,
+        courseId: null
       },
       seachingSchool: false,
       schools: [],
       clazzs: [],
       teachers: [],
+      courses: [],
       grades: [],
       schoolClazzMap: {},
       schoolTeacherMap: {},
@@ -102,13 +118,24 @@ export default {
     } else {
       this.searchSchool()
     }
+    this.loadCourse()
   },
   methods: {
     load (page) {
+      let dates = this.query.dates || []
+      let startDate = dates[0] || ''
+      if (startDate) {
+        startDate = `${formatDate(startDate)} 00:00:00`
+      }
+      let endDate = dates[1] || ''
+      if (endDate) {
+        endDate = `${formatDate(endDate)} 23:59:59`
+      }
+
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains?page=${page}&limit=${this.query.limit}&schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}`
+        url: `/web/api/trains?page=${page}&limit=${this.query.limit}&schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}`
       }).then((res) => {
         let pageData = res.data.data
         this.trains = pageData.data
@@ -182,6 +209,14 @@ export default {
         this.schoolTeacherMap[schoolId] = teachers
 
         this.teachers = teachers
+      })
+    },
+    loadCourse () {
+      this.$http.request({
+        method: 'get',
+        url: `/web/api/courses?page=1&limit=99999999`
+      }).then((res) => {
+        this.courses = res.data.data.data
       })
     },
     getClazzLabel (clazzGrade, clazzName) {

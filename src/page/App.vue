@@ -67,11 +67,12 @@ html, body {background-color:#fff;margin:0;padding:0;}
 
 .app-content{height:calc(100% - 52px);overflow-y:scroll;}
 .app-toolbar{width:100%;box-sizing:border-box;padding:12px 10px;border-bottom:1px solid #e4e7ed;text-align:right;}
-.app-toolbar>label{font-size:14px;margin-left:30px !important;color:#58595F;}
-.app-toolbar>.el-input{margin-left:10px !important;width:200px !important;}
-.app-toolbar>.el-select{margin-left:10px !important;width:200px !important;}
-.app-toolbar>.el-input-number{margin-left:10px !important;width:200px !important;}
-.app-toolbar>.el-date-editor{margin-left:10px !important;}
+.app-toolbar>.item{display:inline-block;line-height:50px;}
+.app-toolbar>.item>label,.app-toolbar>label{font-size:14px;margin-left:30px !important;color:#58595F;}
+.app-toolbar>.item>.el-input,.app-toolbar>.el-input{margin-left:10px !important;width:200px !important;}
+.app-toolbar>.item>.el-select,.app-toolbar>.el-select{margin-left:10px !important;width:200px !important;}
+.app-toolbar>.item>.el-input-number,.app-toolbar>.el-input-number{margin-left:10px !important;width:200px !important;}
+.app-toolbar>.item>.el-date-editor,.app-toolbar>.el-date-editor{margin-left:10px !important;}
 .app-toolbar>.el-button{margin-left:10px !important;}
 .app-toolbar>.left{margin-right:10px !important;float:left;}
 .app-pagination{text-align:right;margin:16px 0 0;}
