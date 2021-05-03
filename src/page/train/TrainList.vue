@@ -39,7 +39,7 @@
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
 
     <el-dialog title="学生训练详情" :visible.sync="showStudentDataDialog" width="96%" append-to-body>
-      <train-student-list :trainingId="trainingId"></train-student-list>
+      <train-student-list :schoolId="training.schoolId" :trainingId="training.trainingId"></train-student-list>
     </el-dialog>
   </div>
 </template>
@@ -73,7 +73,7 @@ export default {
       grades: [],
       schoolClazzMap: {},
       schoolTeacherMap: {},
-      trainingId: 0,
+      training: {},
       showStudentDataDialog: false
     }
   },
@@ -206,7 +206,7 @@ export default {
       return `${(row.courseItemPositions || []).length} / ${row.courseItemCount || 0}`
     },
     toView (row) {
-      this.trainingId = row.trainingId
+      this.training = row
       this.showStudentDataDialog = true
     }
   }

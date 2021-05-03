@@ -1,12 +1,8 @@
 <template>
   <div>
-    <el-table v-loading="loading" :data="stats" :stripe="true" size="mini" border @row-click="openDrawer">
+    <el-table v-loading="loading" :data="stats" :stripe="true" size="mini" border @row-click="openDrawer" :row-style="{ cursor: 'pointer' }">
       <el-table-column type="index" label="序号"></el-table-column>
-      <el-table-column prop="studentName" label="学生">
-        <template slot-scope="scope">
-          <el-button type="text">{{scope.row.studentName}}</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column prop="studentName" label="学生"></el-table-column>
       <el-table-column prop="avgHeartRate" label="平均心率" width="70px"></el-table-column>
       <el-table-column prop="maxHeartRate" label="最大心率" width="70px"></el-table-column>
       <el-table-column prop="minHeartRate" label="最小心率" width="70px"></el-table-column>
@@ -32,6 +28,7 @@
 export default {
   name: 'train-student-list',
   props: {
+    schoolId: {type: Number, require: true},
     trainingId: {type: Number, require: true}
   },
   data () {
@@ -65,7 +62,7 @@ export default {
       })
     },
     openDrawer (stat) {
-      this.$refs.studentTrainDrawer.open(stat)
+      this.$refs.studentTrainDrawer.open(stat, this.schoolId)
     }
   }
 }

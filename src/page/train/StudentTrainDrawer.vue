@@ -111,7 +111,7 @@
       <div class="drawer-bottom" v-if="showBottom !== false" @click="toViewStudentTrainList">查看全部记录</div>
     </el-drawer>
     <el-dialog :title="stat.studentName" :visible.sync="showStudentTrainListDialog" width="75%" append-to-body>
-      <student-train-list :studentId="stat.studentId"></student-train-list>
+      <student-train-list :schoolId="schoolId" :studentId="stat.studentId"></student-train-list>
     </el-dialog>
   </div>
 </template>
@@ -133,12 +133,14 @@ export default {
     return {
       show: false,
       stat: {},
+      schoolId: null,
       showStudentTrainListDialog: false
     }
   },
   methods: {
-    open (stat) {
+    open (stat, schoolId) {
       this.stat = stat
+      this.schoolId = schoolId
       this.show = true
 
       this.$http.request({

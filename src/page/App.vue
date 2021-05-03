@@ -71,6 +71,7 @@ html, body {background-color:#fff;margin:0;padding:0;}
 .app-toolbar>.el-input{margin-left:10px !important;width:200px !important;}
 .app-toolbar>.el-select{margin-left:10px !important;width:200px !important;}
 .app-toolbar>.el-input-number{margin-left:10px !important;width:200px !important;}
+.app-toolbar>.el-date-editor{margin-left:10px !important;}
 .app-toolbar>.el-button{margin-left:10px !important;}
 .app-toolbar>.left{margin-right:10px !important;float:left;}
 .app-pagination{text-align:right;margin:16px 0 0;}
