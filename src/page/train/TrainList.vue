@@ -25,7 +25,7 @@
       </div>
       <div class="item">
         <label>课程</label>
-        <el-select size="small" placeholder="请选择课程" v-model="query.courseId" clearable>
+        <el-select size="small" placeholder="请选择课程" v-model="query.courseId" filterable remote :remote-method="searchCourse" :loading="seachingCourse" clearable>
           <el-option v-for="course in courses" :key="course.courseId" :label="course.name" :value="course.courseId"></el-option>
         </el-select>
       </div>
@@ -85,6 +85,7 @@ export default {
       schools: [],
       clazzs: [],
       teachers: [],
+      seachingCourse: false,
       courses: [],
       grades: [],
       schoolClazzMap: {},
@@ -118,7 +119,7 @@ export default {
     } else {
       this.searchSchool()
     }
-    this.loadCourse()
+    this.searchCourse()
   },
   methods: {
     load (page) {
@@ -211,12 +212,16 @@ export default {
         this.teachers = teachers
       })
     },
-    loadCourse () {
+    searchCourse (query) {
+      this.seachingCourse = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/courses?page=1&limit=99999999`
+        url: `/web/api/courses?page=1&limit=10&name=${query || ''}`
       }).then((res) => {
         this.courses = res.data.data.data
+        this.seachingCourse = false
+      }).catch(() => {
+        this.seachingCourse = false
       })
     },
     getClazzLabel (clazzGrade, clazzName) {
