@@ -1,9 +1,13 @@
 <template>
   <div>
     <div class="app-toolbar">
-      <el-button size="small" @click="toAdd" type="primary" class="left">添加学校</el-button>
-      <label>学校名称</label>
-      <el-input size="small" placeholder="请输入学校名称" v-model="query.name" clearable></el-input>
+      <div class="item left">
+        <el-button size="small" @click="toAdd" type="primary">添加学校</el-button>
+      </div>
+      <div class="item">
+        <label>学校名称</label>
+        <el-input size="small" placeholder="请输入学校名称" v-model="query.name" clearable></el-input>
+      </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="schools" :stripe="true" size="mini" v-loading="loading">

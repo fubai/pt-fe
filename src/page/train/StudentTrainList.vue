@@ -1,14 +1,16 @@
 <template>
   <div v-loading="loading">
     <div class="app-toolbar">
-      <label>训练日期</label>
-      <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-      <template v-if="!admin.teacherId">
+      <div class="item">
+        <label>训练日期</label>
+        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+      </div>
+      <div v-if="!admin.teacherId">
         <label>老师</label>
         <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
           <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
         </el-select>
-      </template>
+      </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="trains" :stripe="true" size="mini" @row-click="openDrawer" :row-style="{ cursor: 'pointer' }">

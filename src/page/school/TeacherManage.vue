@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="app-toolbar">
-      <el-button size="small" @click="toAdd" type="primary" class="left">添加老师</el-button>
-      <label>老师姓名</label>
-      <el-input size="small" placeholder="请输入老师姓名" v-model="query.name" clearable></el-input>
-      <label>老师手机</label>
-      <el-input size="small" placeholder="请输入老师手机" v-model="query.phone" clearable></el-input>
+      <div class="item left">
+        <el-button size="small" @click="toAdd" type="primary">添加老师</el-button>
+      </div>
+      <div class="item">
+        <label>老师姓名</label>
+        <el-input size="small" placeholder="请输入老师姓名" v-model="query.name" clearable></el-input>
+      </div>
+      <div class="item">
+        <label>老师手机</label>
+        <el-input size="small" placeholder="请输入老师手机" v-model="query.phone" clearable></el-input>
+      </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="teachers" :stripe="true" size="mini" v-loading="loading">

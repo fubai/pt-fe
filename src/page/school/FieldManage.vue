@@ -1,13 +1,19 @@
 <template>
   <div>
     <div class="app-toolbar">
-      <el-button size="small" @click="toAdd" type="primary" class="left">添加场地</el-button>
-      <label>学校</label>
-      <el-select size="small" placeholder="请选择学校" v-model="query.schoolId" filterable remote :remote-method="searchSchool1" :loading="seachingSchool1" clearable style="width:100%">
-        <el-option v-for="school in schools1" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
-      </el-select>
-      <label>场地名称</label>
-      <el-input size="small" placeholder="请输入场地名称" v-model="query.name" clearable></el-input>
+      <div class="item left">
+        <el-button size="small" @click="toAdd" type="primary">添加场地</el-button>
+      </div>
+      <div class="item">
+        <label>学校</label>
+        <el-select size="small" placeholder="请选择学校" v-model="query.schoolId" filterable remote :remote-method="searchSchool1" :loading="seachingSchool1" clearable style="width:100%">
+          <el-option v-for="school in schools1" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
+        </el-select>
+      </div>
+      <div class="item">
+        <label>场地名称</label>
+        <el-input size="small" placeholder="请输入场地名称" v-model="query.name" clearable></el-input>
+      </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="fields" :stripe="true" size="mini" v-loading="loading">

@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="app-toolbar">
-      <el-button size="small" @click="toAdd" type="primary" class="left">添加管理员</el-button>
-      <label>登录账号</label>
-      <el-input size="small" placeholder="请输入登录账号" v-model="query.username" clearable></el-input>
-      <label>联系电话</label>
-      <el-input size="small" placeholder="请输入联系电话" v-model="query.mobile" clearable></el-input>
+      <div class="item left">
+        <el-button size="small" @click="toAdd" type="primary">添加管理员</el-button>
+      </div>
+      <div class="item">
+        <label>登录账号</label>
+        <el-input size="small" placeholder="请输入登录账号" v-model="query.username" clearable></el-input>
+      </div>
+      <div class="item">
+        <label>联系电话</label>
+        <el-input size="small" placeholder="请输入联系电话" v-model="query.mobile" clearable></el-input>
+      </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
     <el-table :data="bizAdmins" :stripe="true" size="mini" v-loading="loading">
