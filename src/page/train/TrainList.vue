@@ -2,8 +2,8 @@
   <div>
     <div class="app-toolbar">
       <div class="item">
-        <label>训练日期</label>
-        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+        <label>日期</label>
+        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:270px;"></el-date-picker>
       </div>
       <div class="item" v-if="!admin.schoolId">
         <label>学校</label>
@@ -31,7 +31,8 @@
       </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
-    <el-table :data="trains" :stripe="true" size="mini" v-loading="loading">
+    <train-chart ref="trainChart" style="margin:20px auto;"></train-chart>
+    <el-table :data="trains" :stripe="true" size="mini" border v-loading="loading">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
       <el-table-column prop="courseName" label="课程"></el-table-column>
@@ -48,7 +49,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
+    <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="loadPage" class="app-pagination"></el-pagination>
 
     <el-dialog title="学生训练详情" :visible.sync="showStudentDataDialog" width="96%" append-to-body>
       <train-student-list :schoolId="training.schoolId" :trainingId="training.trainingId"></train-student-list>
@@ -61,11 +62,13 @@ import Vue from 'vue'
 import { DICTIONARY_ID_GRADE } from '@/config'
 import { formatDate } from '@/util'
 import TrainStudentList from './TrainStudentList'
+import TrainChart from './TrainChart'
 
 export default {
   name: 'train-list',
   components: {
-    TrainStudentList
+    TrainStudentList,
+    TrainChart
   },
   data () {
     return {
@@ -122,7 +125,7 @@ export default {
     this.searchCourse()
   },
   methods: {
-    load (page) {
+    load (page, isPaging) {
       let dates = this.query.dates || []
       let startDate = dates[0] || ''
       if (startDate) {
@@ -146,6 +149,19 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+
+      if (isPaging !== true) {
+        this.$http.request({
+          method: 'get',
+          url: `/web/api/trains/stats?schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}`
+        }).then((res) => {
+          let stat = res.data.data || {}
+          this.$refs.trainChart.renderChart(stat.dayCounts || [], stat.dayCourseItemCompleteRates || [], stat.dayAvgHeartRates || [])
+        })
+      }
+    },
+    loadPage (page) {
+      this.load(page, true)
     },
     searchSchool (query) {
       this.seachingSchool = true
