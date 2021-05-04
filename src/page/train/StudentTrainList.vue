@@ -19,6 +19,7 @@
       </div>
       <el-button size="small" @click="load(1)">查询</el-button>
     </div>
+    <train-chart ref="trainChart" style="margin:20px auto;"></train-chart>
     <el-table :data="trains" :stripe="true" size="mini" @row-click="openDrawer" border :row-style="{ cursor: 'pointer' }">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
@@ -29,7 +30,7 @@
       <el-table-column prop="teacherName" label="老师" width="90px" v-if="!admin.teacherId"></el-table-column>
       <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
     </el-table>
-    <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="load" class="app-pagination"></el-pagination>
+    <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="loadPage" class="app-pagination"></el-pagination>
     <student-train-drawer ref="studentTrainDrawer" :show-bottom="false"></student-train-drawer>
   </div>
 </template>
@@ -38,9 +39,13 @@
 import Vue from 'vue'
 import { DICTIONARY_ID_GRADE } from '@/config'
 import { formatDate, formatTimestamp } from '@/util'
+import TrainChart from './TrainChart'
 
 export default {
   name: 'student-train-list',
+  components: {
+    TrainChart
+  },
   props: {
     schoolId: {type: Number, require: true},
     studentId: {type: Number, require: true}
@@ -85,7 +90,7 @@ export default {
     this.searchCourse()
   },
   methods: {
-    load (page) {
+    load (page, isPaging) {
       if (!this.studentId) {
         this.trains = []
         this.query.page = 1
@@ -115,6 +120,19 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+
+      if (isPaging !== true) {
+        this.$http.request({
+          method: 'get',
+          url: `/web/api/trainings/stats?schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.query.teacherId || ''}&courseId=${this.query.courseId || ''}&studentId=${this.studentId}&startDate=${startDate}&endDate=${endDate}`
+        }).then((res) => {
+          let stat = res.data.data || {}
+          this.$refs.trainChart.renderChart(stat.dayCounts || [], stat.dayCourseItemCompleteRates || [], stat.dayAvgHeartRates || [])
+        })
+      }
+    },
+    loadPage (page) {
+      this.load(page, true)
     },
     loadTeacher () {
       let schoolId = this.schoolId
