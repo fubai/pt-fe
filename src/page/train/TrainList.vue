@@ -37,9 +37,7 @@
       <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
       <el-table-column prop="courseName" label="课程"></el-table-column>
       <el-table-column prop="schoolName" label="学校"></el-table-column>
-      <el-table-column prop="clazzName" label="班级" width="120px">
-        <template slot-scope="scope">{{getClazzLabel(scope.row.clazzGrade, scope.row.clazzName)}}</template>
-      </el-table-column>
+      <el-table-column prop="fullClazzName" label="班级" width="120px"></el-table-column>
       <el-table-column prop="teacherName" label="老师" width="90px" v-if="!admin.teacherId"></el-table-column>
       <el-table-column prop="studentCount" label="学生" :formatter="studentCountFormatter" width="110px"></el-table-column>
       <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
@@ -52,7 +50,7 @@
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="loadPage" class="app-pagination"></el-pagination>
 
     <el-dialog title="学生训练详情" :visible.sync="showStudentDataDialog" width="90%" append-to-body>
-      <train-student-list :schoolId="training.schoolId" :trainingId="training.trainingId"></train-student-list>
+      <train-student-list :training="training"></train-student-list>
     </el-dialog>
   </div>
 </template>
@@ -143,6 +141,9 @@ export default {
       }).then((res) => {
         let pageData = res.data.data
         this.trains = pageData.data
+        for (let i = this.trains.length - 1; i >= 0; i--) {
+          this.trains[i].fullClazzName = this.getClazzLabel(this.trains[i].clazzGrade, this.trains[i].clazzName)
+        }
         this.query.page = pageData.page
         this.query.total = pageData.total
         this.loading = false

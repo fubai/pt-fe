@@ -1,5 +1,17 @@
 <template>
   <div>
+    <div class="info">
+      <label>上课时间:</label>
+      <span>{{`${training.startTime.substring(0, 16)} ~ ${training.endTime.substring(10, 16)}`}}</span>
+      <label>课程:</label>
+      <span>{{training.courseName}}</span>
+      <label>老师:</label>
+      <span>{{training.teacherName}}</span>
+      <label>班级:</label>
+      <span>{{training.fullClazzName}}</span>
+      <label>完课情况:</label>
+      <span>{{`${(training.courseItemPositions || []).length} / ${training.courseItemCount || 0}`}}</span>
+    </div>
     <el-table v-loading="loading" :data="stats" :stripe="true" size="mini" border @row-click="openDrawer" :row-style="{ cursor: 'pointer' }">
       <el-table-column type="index" label="序号" fixed="left"></el-table-column>
       <el-table-column prop="studentName" label="学生" fixed="left"></el-table-column>
@@ -28,8 +40,7 @@
 export default {
   name: 'train-student-list',
   props: {
-    schoolId: {type: Number, require: true},
-    trainingId: {type: Number, require: true}
+    training: {type: Object, require: true}
   },
   data () {
     return {
@@ -38,7 +49,7 @@ export default {
     }
   },
   watch: {
-    trainingId: {
+    training: {
       handler: function () {
         this.load()
       },
@@ -47,13 +58,13 @@ export default {
   },
   methods: {
     load () {
-      if (!this.trainingId) {
+      if (!this.training || !this.training.trainingId) {
         return
       }
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains/${this.trainingId}/stats`
+        url: `/web/api/trains/${this.training.trainingId}/stats`
       }).then((res) => {
         this.stats = res.data.data || []
         this.loading = false
@@ -62,8 +73,14 @@ export default {
       })
     },
     openDrawer (stat) {
-      this.$refs.studentTrainDrawer.open(stat, this.schoolId)
+      this.$refs.studentTrainDrawer.open(stat, this.training.schoolId)
     }
   }
 }
 </script>
+
+<style>
+.info{margin-bottom:15px;}
+.info>label{color:#909399;}
+.info>span{margin:0 30px 0 10px;}
+</style>
