@@ -1,38 +1,40 @@
 <template>
-  <div v-loading="loading">
-    <div class="app-toolbar" style="border-bottom:none;padding-right:0">
-      <div class="item">
-        <label>训练日期</label>
-        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:270px;"></el-date-picker>
+  <el-dialog :title="stat.studentName" :visible.sync="show" width="80%" append-to-body>
+    <div v-loading="loading">
+      <div class="app-toolbar" style="border-bottom:none;padding-right:0">
+        <div class="item">
+          <label>训练日期</label>
+          <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:270px;"></el-date-picker>
+        </div>
+        <div class="item" v-if="!admin.teacherId">
+          <label>老师</label>
+          <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
+            <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
+          </el-select>
+        </div>
+        <div class="item">
+          <label>课程</label>
+          <el-select size="small" placeholder="请选择课程" v-model="query.courseId" filterable remote :remote-method="searchCourse" :loading="seachingCourse" clearable>
+            <el-option v-for="course in courses" :key="course.courseId" :label="course.name" :value="course.courseId"></el-option>
+          </el-select>
+        </div>
+        <el-button size="small" @click="load(1)">查询</el-button>
       </div>
-      <div class="item" v-if="!admin.teacherId">
-        <label>老师</label>
-        <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
-          <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
-        </el-select>
-      </div>
-      <div class="item">
-        <label>课程</label>
-        <el-select size="small" placeholder="请选择课程" v-model="query.courseId" filterable remote :remote-method="searchCourse" :loading="seachingCourse" clearable>
-          <el-option v-for="course in courses" :key="course.courseId" :label="course.name" :value="course.courseId"></el-option>
-        </el-select>
-      </div>
-      <el-button size="small" @click="load(1)">查询</el-button>
+      <train-chart ref="trainChart" style="margin:20px auto;"></train-chart>
+      <el-table :data="trains" :stripe="true" size="mini" @row-click="openDrawer" border :row-style="{ cursor: 'pointer' }">
+        <el-table-column type="index" label="序号"></el-table-column>
+        <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
+        <el-table-column prop="courseName" label="课程"></el-table-column>
+        <el-table-column prop="clazzName" label="班级" width="120px">
+          <template slot-scope="scope">{{getClazzLabel(scope.row.clazzGrade, scope.row.clazzName)}}</template>
+        </el-table-column>
+        <el-table-column prop="teacherName" label="老师" width="90px" v-if="!admin.teacherId"></el-table-column>
+        <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
+      </el-table>
+      <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="loadPage" class="app-pagination"></el-pagination>
+      <student-train-drawer ref="studentTrainDrawer" :show-bottom="false"></student-train-drawer>
     </div>
-    <train-chart ref="trainChart" style="margin:20px auto;"></train-chart>
-    <el-table :data="trains" :stripe="true" size="mini" @row-click="openDrawer" border :row-style="{ cursor: 'pointer' }">
-      <el-table-column type="index" label="序号"></el-table-column>
-      <el-table-column prop="startTime" label="上课时间" :formatter="timeFormatter" width="175px"></el-table-column>
-      <el-table-column prop="courseName" label="课程"></el-table-column>
-      <el-table-column prop="clazzName" label="班级" width="120px">
-        <template slot-scope="scope">{{getClazzLabel(scope.row.clazzGrade, scope.row.clazzName)}}</template>
-      </el-table-column>
-      <el-table-column prop="teacherName" label="老师" width="90px" v-if="!admin.teacherId"></el-table-column>
-      <el-table-column prop="courseItemCount" label="完课情况" :formatter="courseFormatter" width="110px"></el-table-column>
-    </el-table>
-    <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="loadPage" class="app-pagination"></el-pagination>
-    <student-train-drawer ref="studentTrainDrawer" :show-bottom="false"></student-train-drawer>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -46,12 +48,11 @@ export default {
   components: {
     TrainChart
   },
-  props: {
-    schoolId: {type: Number, require: true},
-    studentId: {type: Number, require: true}
-  },
   data () {
     return {
+      schoolId: null,
+      stat: {},
+      show: false,
       loading: false,
       trains: [],
       query: {
@@ -73,25 +74,22 @@ export default {
       return this.$store.state.admin
     }
   },
-  watch: {
-    trainingId: {
-      handler: function () {
-        this.load(1)
-      },
-      immediate: true
-    }
-  },
   created () {
     Vue.biz.loadDictionary(DICTIONARY_ID_GRADE, (grades) => {
       this.grades = grades
-      this.load(1)
     })
-    this.loadTeacher()
     this.searchCourse()
   },
   methods: {
+    open (schoolId, stat) {
+      this.schoolId = schoolId
+      this.stat = stat
+      this.show = true
+      this.loadTeacher()
+      this.load(1)
+    },
     load (page, isPaging) {
-      if (!this.studentId) {
+      if (!this.stat || !this.stat.studentId) {
         this.trains = []
         this.query.page = 1
         this.query.total = 0
@@ -110,7 +108,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/students/${this.studentId}/trainings?teacherId=${this.query.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${this.query.limit}`
+        url: `/web/api/students/${this.stat.studentId}/trainings?teacherId=${this.query.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${this.query.limit}`
       }).then((res) => {
         let pageData = res.data.data
         this.trains = pageData.data
@@ -124,7 +122,7 @@ export default {
       if (isPaging !== true) {
         this.$http.request({
           method: 'get',
-          url: `/web/api/trainings/stats?schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.query.teacherId || ''}&courseId=${this.query.courseId || ''}&studentId=${this.studentId}&startDate=${startDate}&endDate=${endDate}`
+          url: `/web/api/trainings/stats?schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.query.teacherId || ''}&courseId=${this.query.courseId || ''}&studentId=${this.stat.studentId}&startDate=${startDate}&endDate=${endDate}`
         }).then((res) => {
           let stat = res.data.data || {}
           this.$refs.trainChart.renderChart(stat.dayCounts || [], stat.dayCourseItemCompleteRates || [], stat.dayAvgHeartRates || [])
@@ -184,7 +182,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trainings/${row.trainingId}/stats?studentId=${this.studentId}`
+        url: `/web/api/trainings/${row.trainingId}/stats?studentId=${this.stat.studentId}`
       }).then((res) => {
         this.loading = false
 

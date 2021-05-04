@@ -110,9 +110,7 @@
       </div>
       <div class="drawer-bottom" v-if="showBottom !== false" @click="toViewStudentTrainList">查看全部记录</div>
     </el-drawer>
-    <el-dialog :title="stat.studentName" :visible.sync="showStudentTrainListDialog" width="80%" append-to-body>
-      <student-train-list :schoolId="schoolId" :studentId="stat.studentId"></student-train-list>
-    </el-dialog>
+    <student-train-list ref="studentTrainList"></student-train-list>
   </div>
 </template>
 
@@ -133,8 +131,7 @@ export default {
     return {
       show: false,
       stat: {},
-      schoolId: null,
-      showStudentTrainListDialog: false
+      schoolId: null
     }
   },
   methods: {
@@ -266,7 +263,7 @@ export default {
       })
     },
     toViewStudentTrainList () {
-      this.showStudentTrainListDialog = true
+      this.$refs.studentTrainList.open(this.schoolId, this.stat)
     },
     getDurationText (duration) {
       if (duration === 0) {
