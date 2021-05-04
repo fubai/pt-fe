@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-content">
     <div class="app-toolbar">
       <div class="item left">
         <el-button size="small" @click="toAdd" type="primary">添加老师</el-button>

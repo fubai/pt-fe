@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-content">
     <div class="app-toolbar">
       <div class="item">
         <label>日期</label>

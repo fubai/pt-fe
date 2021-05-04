@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-content">
     <div class="app-toolbar" v-if="editable">
       <el-button size="small" @click="toAdd()" type="primary">添加一级菜单</el-button>
     </div>

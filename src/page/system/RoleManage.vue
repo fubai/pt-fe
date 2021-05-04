@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-content">
     <div class="app-toolbar">
       <el-button type="primary" size="small" @click="toAdd">添加角色</el-button>
     </div>

@@ -1,14 +1,16 @@
 <template>
-  <el-tree :data="apiGroups" :show-checkbox="checkable" node-key="apiId" :props="{children:'children',label:'name'}" ref="tree" v-loading="loading" style="padding:10px">
-    <div slot-scope="{ node, data }" class="api-manage-node">
-      <span>{{ data.name }}</span>
-      <div v-if="data.method">
-        <span>{{ data.method }}</span>
-        <span>{{ data.url }}</span>
-        <span>{{ data.createTime }}</span>
+  <div class="app-content">
+    <el-tree :data="apiGroups" :show-checkbox="checkable" node-key="apiId" :props="{children:'children',label:'name'}" ref="tree" v-loading="loading" style="padding:10px">
+      <div slot-scope="{ node, data }" class="api-manage-node">
+        <span>{{ data.name }}</span>
+        <div v-if="data.method">
+          <span>{{ data.method }}</span>
+          <span>{{ data.url }}</span>
+          <span>{{ data.createTime }}</span>
+        </div>
       </div>
-    </div>
-  </el-tree>
+    </el-tree>
+  </div>
 </template>
 
 <script>

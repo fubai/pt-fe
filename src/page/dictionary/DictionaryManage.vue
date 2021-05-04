@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-content">
     <div class="app-toolbar">
       <el-input size="small" placeholder="请输入关键字" v-model="query.name" clearable style="width:360px">
         <el-button size="small" @click="load" slot="append">查询</el-button>
