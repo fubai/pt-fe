@@ -2,7 +2,7 @@
   <div>
     <div class="info">
       <label>上课时间:</label>
-      <span>{{`${training.startTime.substring(0, 16)} ~ ${training.endTime.substring(10, 16)}`}}</span>
+      <span>{{formatTrainingTime(training)}}</span>
       <label>课程:</label>
       <span>{{training.courseName}}</span>
       <label>老师:</label>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { formatTimestamp } from '@/util'
+
 export default {
   name: 'train-student-list',
   props: {
@@ -74,6 +76,11 @@ export default {
     },
     openDrawer (stat) {
       this.$refs.studentTrainDrawer.open(stat, this.training.schoolId)
+    },
+    formatTrainingTime (training) {
+      let startTime = formatTimestamp(new Date(training.startTime * 1000))
+      let endTime = formatTimestamp(new Date(training.endTime * 1000))
+      return `${startTime.substring(0, 16)} ~ ${endTime.substring(10, 16)}`
     }
   }
 }

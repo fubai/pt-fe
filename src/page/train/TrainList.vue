@@ -58,7 +58,7 @@
 <script>
 import Vue from 'vue'
 import { DICTIONARY_ID_GRADE } from '@/config'
-import { formatDate } from '@/util'
+import { formatDate, formatTimestamp } from '@/util'
 import TrainStudentList from './TrainStudentList'
 import TrainChart from './TrainChart'
 
@@ -254,7 +254,9 @@ export default {
       return gradeValue
     },
     timeFormatter (row) {
-      return `${row.startTime.substring(0, 16)} ~ ${row.endTime.substring(10, 16)}`
+      let startTime = formatTimestamp(new Date(row.startTime * 1000))
+      let endTime = formatTimestamp(new Date(row.endTime * 1000))
+      return `${startTime.substring(0, 16)} ~ ${endTime.substring(10, 16)}`
     },
     studentCountFormatter (row) {
       return `${row.trainingStudentCount} / ${row.clazzStudentCount}`
