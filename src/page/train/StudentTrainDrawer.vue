@@ -110,7 +110,7 @@
       </div>
       <div class="drawer-bottom" v-if="showBottom !== false" @click="toViewStudentTrainList">查看全部记录</div>
     </el-drawer>
-    <el-dialog :title="stat.studentName" :visible.sync="showStudentTrainListDialog" width="75%" append-to-body>
+    <el-dialog :title="stat.studentName" :visible.sync="showStudentTrainListDialog" width="80%" append-to-body>
       <student-train-list :schoolId="schoolId" :studentId="stat.studentId"></student-train-list>
     </el-dialog>
   </div>

@@ -3,12 +3,18 @@
     <div class="app-toolbar" style="border-bottom:none;padding-right:0">
       <div class="item">
         <label>训练日期</label>
-        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+        <el-date-picker v-model="query.dates" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:270px;"></el-date-picker>
       </div>
       <div class="item" v-if="!admin.teacherId">
         <label>老师</label>
         <el-select size="small" placeholder="请选择老师" v-model="query.teacherId" clearable>
           <el-option v-for="teacher in teachers" :key="teacher.teacherId" :label="teacher.name" :value="teacher.teacherId"></el-option>
+        </el-select>
+      </div>
+      <div class="item">
+        <label>课程</label>
+        <el-select size="small" placeholder="请选择课程" v-model="query.courseId" filterable remote :remote-method="searchCourse" :loading="seachingCourse" clearable>
+          <el-option v-for="course in courses" :key="course.courseId" :label="course.name" :value="course.courseId"></el-option>
         </el-select>
       </div>
       <el-button size="small" @click="load(1)">查询</el-button>
@@ -48,9 +54,12 @@ export default {
         limit: 10,
         total: 0,
         dates: [],
-        teacherId: null
+        teacherId: null,
+        courseId: null
       },
       teachers: [],
+      seachingCourse: false,
+      courses: [],
       grades: []
     }
   },
@@ -73,6 +82,7 @@ export default {
       this.load(1)
     })
     this.loadTeacher()
+    this.searchCourse()
   },
   methods: {
     load (page) {
@@ -95,7 +105,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/students/${this.studentId}/trainings?teacherId=${this.query.teacherId || ''}&startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${this.query.limit}`
+        url: `/web/api/students/${this.studentId}/trainings?teacherId=${this.query.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${this.query.limit}`
       }).then((res) => {
         let pageData = res.data.data
         this.trains = pageData.data
@@ -118,6 +128,18 @@ export default {
         url: `/web/api/teachers?page=1&limit=99999999&schoolId=${schoolId}`
       }).then((res) => {
         this.teachers = res.data.data.data
+      })
+    },
+    searchCourse (query) {
+      this.seachingCourse = true
+      this.$http.request({
+        method: 'get',
+        url: `/web/api/courses?page=1&limit=10&name=${query || ''}`
+      }).then((res) => {
+        this.courses = res.data.data.data
+        this.seachingCourse = false
+      }).catch(() => {
+        this.seachingCourse = false
       })
     },
     getClazzLabel (clazzGrade, clazzName) {
