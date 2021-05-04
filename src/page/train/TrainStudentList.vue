@@ -12,6 +12,7 @@
       <label>完课情况:</label>
       <span>{{`${(training.courseItemPositions || []).length} / ${training.courseItemCount || 0}`}}</span>
     </div>
+    <div ref="chart" style="width:100%;height:280px"></div>
     <el-table v-loading="loading" :data="stats" :stripe="true" size="mini" border @row-click="openDrawer" :row-style="{ cursor: 'pointer' }">
       <el-table-column type="index" label="序号" fixed="left"></el-table-column>
       <el-table-column prop="studentName" label="学生" fixed="left"></el-table-column>
@@ -37,7 +38,8 @@
 </template>
 
 <script>
-import { formatTimestamp } from '@/util'
+import * as echarts from 'echarts'
+import { formatTimestamp, formatTime } from '@/util'
 
 export default {
   name: 'train-student-list',
@@ -66,12 +68,184 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains/${this.training.trainingId}/stats`
+        url: `/web/api/trainings/${this.training.trainingId}/stats`
       }).then((res) => {
         this.stats = res.data.data || []
         this.loading = false
       }).catch(() => {
         this.loading = false
+      })
+
+      this.$http.request({
+        method: 'get',
+        url: `/web/api/trainings/${this.training.trainingId}/points`
+      }).then((res) => {
+        this.renderChart(res.data.data || [])
+      }).catch(() => {
+        this.renderChart([])
+      })
+    },
+    renderChart (points) {
+      console.dir(points)
+      let maxHeartRates = []
+      let minHeartRates = []
+      let avgHeartRates = []
+      let maxDiastolicPressures = []
+      let minDiastolicPressures = []
+      let avgDiastolicPressures = []
+      let maxSystolicPressures = []
+      let minSystolicPressures = []
+      let avgSystolicPressures = []
+      let maxBloodOxygens = []
+      let minBloodOxygens = []
+      let avgBloodOxygens = []
+      let times = []
+      for (let i = 0; i < points.length; i++) {
+        let point = points[i]
+        maxHeartRates.push(point.maxHeartRate)
+        minHeartRates.push(point.minHeartRate)
+        avgHeartRates.push(point.avgHeartRate)
+        maxDiastolicPressures.push(point.maxDiastolicPressure)
+        minDiastolicPressures.push(point.minDiastolicPressure)
+        avgDiastolicPressures.push(point.avgDiastolicPressure)
+        maxSystolicPressures.push(point.maxSystolicPressure)
+        minSystolicPressures.push(point.minSystolicPressure)
+        avgSystolicPressures.push(point.avgSystolicPressure)
+        maxBloodOxygens.push(point.maxBloodOxygen)
+        minBloodOxygens.push(point.minBloodOxygen)
+        avgBloodOxygens.push(point.avgBloodOxygen)
+        times.push(formatTime(new Date(point.time * 1000)))
+      }
+
+      let itemStyle = {
+        normal: {
+          lineStyle: {
+            width: 1
+          }
+        }
+      }
+
+      echarts.init(this.$refs.chart).setOption({
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: '0%',
+          left: '0%',
+          data: ['平均心率', '最大心率', '最小心率', '平均舒张压', '最大舒张压', '最小舒张压', '平均收缩压', '最大收缩压', '最小收缩压', '平均血氧', '最大血氧', '最小血氧'],
+          selected: {
+            '平均心率': true,
+            '最大心率': true,
+            '最小心率': true,
+            '平均舒张压': false,
+            '最大舒张压': false,
+            '最小舒张压': false,
+            '平均收缩压': false,
+            '最大收缩压': false,
+            '最小收缩压': false,
+            '平均血氧': false,
+            '最大血氧': false,
+            '最小血氧': false
+          }
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            restore: {}
+          },
+          top: '0%',
+          right: '0%'
+        },
+        grid: {
+          left: '30px',
+          right: '25px',
+          bottom: '45px',
+          top: '50px'
+        },
+        xAxis: {
+          type: 'category',
+          data: times,
+          boundaryGap: false
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          name: '平均心率',
+          type: 'line',
+          data: avgHeartRates,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最大心率',
+          type: 'line',
+          data: maxHeartRates,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最小心率',
+          type: 'line',
+          data: minHeartRates,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '平均舒张压',
+          type: 'line',
+          data: avgDiastolicPressures,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最大舒张压',
+          type: 'line',
+          data: maxDiastolicPressures,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最小舒张压',
+          type: 'line',
+          data: minDiastolicPressures,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '平均收缩压',
+          type: 'line',
+          data: avgSystolicPressures,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最大收缩压',
+          type: 'line',
+          data: maxSystolicPressures,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最小收缩压',
+          type: 'line',
+          data: minSystolicPressures,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '平均血氧',
+          type: 'line',
+          data: avgBloodOxygens,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最大血氧',
+          type: 'line',
+          data: maxBloodOxygens,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }, {
+          name: '最小血氧',
+          type: 'line',
+          data: minBloodOxygens,
+          itemStyle: itemStyle,
+          showSymbol: false
+        }]
       })
     },
     openDrawer (stat) {

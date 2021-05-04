@@ -145,7 +145,7 @@ export default {
 
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains/${stat.trainingId}/points?studentId=${stat.studentId}`
+        url: `/web/api/students/${stat.studentId}/trainings/${stat.trainingId}/points`
       }).then((res) => {
         this.renderChart(res.data.data || [])
       }).catch(() => {

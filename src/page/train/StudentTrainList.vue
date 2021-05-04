@@ -144,7 +144,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains/${row.trainingId}/stats?studentId=${this.studentId}`
+        url: `/web/api/trainings/${row.trainingId}/stats?studentId=${this.studentId}`
       }).then((res) => {
         this.loading = false
 

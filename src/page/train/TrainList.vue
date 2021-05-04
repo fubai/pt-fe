@@ -137,7 +137,7 @@ export default {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/trains?page=${page}&limit=${this.query.limit}&schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}`
+        url: `/web/api/trainings?page=${page}&limit=${this.query.limit}&schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}`
       }).then((res) => {
         let pageData = res.data.data
         this.trains = pageData.data
@@ -154,7 +154,7 @@ export default {
       if (isPaging !== true) {
         this.$http.request({
           method: 'get',
-          url: `/web/api/trains/stats?schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}`
+          url: `/web/api/trainings/stats?schoolId=${this.schoolId || ''}&clazzId=${this.query.clazzId || ''}&teacherId=${this.teacherId || ''}&courseId=${this.query.courseId || ''}&startDate=${startDate}&endDate=${endDate}`
         }).then((res) => {
           let stat = res.data.data || {}
           this.$refs.trainChart.renderChart(stat.dayCounts || [], stat.dayCourseItemCompleteRates || [], stat.dayAvgHeartRates || [])
