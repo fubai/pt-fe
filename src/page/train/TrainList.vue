@@ -51,7 +51,7 @@
     </el-table>
     <el-pagination v-show="query.total > 0" :page-size="query.limit" :pager-count="11" layout="total, prev, pager, next" :total="query.total" :background="true" :current-page="query.page" @current-change="loadPage" class="app-pagination"></el-pagination>
 
-    <el-dialog title="学生训练详情" :visible.sync="showStudentDataDialog" width="96%" append-to-body>
+    <el-dialog title="学生训练详情" :visible.sync="showStudentDataDialog" width="90%" append-to-body>
       <train-student-list :schoolId="training.schoolId" :trainingId="training.trainingId"></train-student-list>
     </el-dialog>
   </div>
