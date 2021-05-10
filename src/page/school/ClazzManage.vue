@@ -27,6 +27,7 @@
           <el-link @click="toManageStudent(scope.row)" type="primary" size="small">{{scope.row.studentCount}}</el-link>
         </template>
       </el-table-column>
+      <el-table-column prop="maxHeartRateThreshold" label="最大心率报警阈值" width="120px"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="145px"></el-table-column>
       <el-table-column prop="updateTime" label="最后修改时间" width="145px"></el-table-column>
       <el-table-column fixed="right" label="操作" width="238">
@@ -61,6 +62,9 @@
               <span style="float:right;color:#8492a6;font-size:13px">{{ teacher.schoolName }}</span>
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="最大心率报警阈值" prop="maxHeartRateThreshold">
+          <el-input-number v-model="form.maxHeartRateThreshold" placeholder="请输入最大心率报警阈值"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -110,13 +114,15 @@ export default {
         schoolId: null,
         grade: null,
         name: '',
-        teacherId: null
+        teacherId: null,
+        maxHeartRateThreshold: 200
       },
       formRule: {
         schoolId: [{ required: true, message: '请选择学校', trigger: 'change' }],
         grade: [{ required: true, message: '请选择年级', trigger: 'change' }],
         name: [{ required: true, message: '请输入班级名称', trigger: 'blur' }],
-        teacherId: [{ required: true, message: '请选择老师', trigger: 'change' }]
+        teacherId: [{ required: true, message: '请选择老师', trigger: 'change' }],
+        maxHeartRateThreshold: [{ required: true, message: '请输入最大心率报警阈值', trigger: 'blur' }]
       },
       currentUpdateClazzId: 0,
       showStudentDialog: false,
@@ -202,7 +208,8 @@ export default {
           schoolId: null,
           grade: null,
           name: '',
-          teacherId: null
+          teacherId: null,
+          maxHeartRateThreshold: 200
         }
         this.$nextTick(() => {
           this.$refs.form.clearValidate()
@@ -219,7 +226,8 @@ export default {
         schoolId: row.schoolId,
         grade: row.grade,
         name: row.name,
-        teacherId: row.teacherId
+        teacherId: row.teacherId,
+        maxHeartRateThreshold: row.maxHeartRateThreshold
       }
       this.$nextTick(() => {
         this.$refs.form.clearValidate()
@@ -252,7 +260,8 @@ export default {
               schoolId: this.form.schoolId,
               grade: this.form.grade,
               name: this.form.name,
-              teacherId: this.form.teacherId
+              teacherId: this.form.teacherId,
+              maxHeartRateThreshold: this.form.maxHeartRateThreshold
             })
           }).then(() => {
             this.showForm = false
