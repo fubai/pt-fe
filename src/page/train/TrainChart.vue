@@ -44,11 +44,12 @@ export default {
             restore: {}
           },
           top: '0%',
-          right: '8%'
+          right: '15px'
         },
         grid: {
           bottom: '10%',
-          right: '8%'
+          right: '15px',
+          left: '45px'
         },
         xAxis: {
           type: 'category',
@@ -75,7 +76,7 @@ export default {
       for (let i = 0; i < dayCourseItemCompleteRates.length; i++) {
         let dayCourseItemCompleteRate = dayCourseItemCompleteRates[i]
         dates.push(dayCourseItemCompleteRate.key)
-        values.push(dayCourseItemCompleteRate.value * 100)
+        values.push(Math.floor(dayCourseItemCompleteRate.value * 100))
       }
 
       echarts.init(this.$refs.chart2).setOption({
@@ -97,11 +98,12 @@ export default {
             restore: {}
           },
           top: '0%',
-          right: '8%'
+          right: '15px'
         },
         grid: {
           bottom: '10%',
-          right: '8%'
+          right: '15px',
+          left: '45px'
         },
         xAxis: {
           type: 'category',
@@ -155,11 +157,12 @@ export default {
             restore: {}
           },
           top: '0%',
-          right: '8%'
+          right: '15px'
         },
         grid: {
           bottom: '10%',
-          right: '8%'
+          right: '15px',
+          left: '30px'
         },
         xAxis: {
           type: 'category',
