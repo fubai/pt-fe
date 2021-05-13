@@ -66,7 +66,7 @@ export default {
           name: '上课数量',
           type: 'line',
           data: values,
-          showSymbol: false
+          showSymbol: dates.length < 2
         }]
       })
     },
@@ -178,7 +178,7 @@ export default {
           name: '平均心率',
           type: 'line',
           data: values,
-          showSymbol: false
+          showSymbol: dates.length < 2
         }]
       })
     }
