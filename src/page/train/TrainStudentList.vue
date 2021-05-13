@@ -39,7 +39,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import { formatTimestamp, formatTime } from '@/util'
+import { formatTimestamp, formatMinuteAndSecond } from '@/util'
 
 export default {
   name: 'train-student-list',
@@ -100,21 +100,24 @@ export default {
       let minBloodOxygens = []
       let avgBloodOxygens = []
       let times = []
-      for (let i = 0; i < points.length; i++) {
-        let point = points[i]
-        maxHeartRates.push(point.maxHeartRate)
-        minHeartRates.push(point.minHeartRate)
-        avgHeartRates.push(point.avgHeartRate)
-        maxDiastolicPressures.push(point.maxDiastolicPressure)
-        minDiastolicPressures.push(point.minDiastolicPressure)
-        avgDiastolicPressures.push(point.avgDiastolicPressure)
-        maxSystolicPressures.push(point.maxSystolicPressure)
-        minSystolicPressures.push(point.minSystolicPressure)
-        avgSystolicPressures.push(point.avgSystolicPressure)
-        maxBloodOxygens.push(point.maxBloodOxygen)
-        minBloodOxygens.push(point.minBloodOxygen)
-        avgBloodOxygens.push(point.avgBloodOxygen)
-        times.push(formatTime(new Date(point.time * 1000)))
+      if (points.length > 0) {
+        let offsetTime = points[0].time
+        for (let i = 0; i < points.length; i++) {
+          let point = points[i]
+          maxHeartRates.push(point.maxHeartRate)
+          minHeartRates.push(point.minHeartRate)
+          avgHeartRates.push(point.avgHeartRate)
+          maxDiastolicPressures.push(point.maxDiastolicPressure)
+          minDiastolicPressures.push(point.minDiastolicPressure)
+          avgDiastolicPressures.push(point.avgDiastolicPressure)
+          maxSystolicPressures.push(point.maxSystolicPressure)
+          minSystolicPressures.push(point.minSystolicPressure)
+          avgSystolicPressures.push(point.avgSystolicPressure)
+          maxBloodOxygens.push(point.maxBloodOxygen)
+          minBloodOxygens.push(point.minBloodOxygen)
+          avgBloodOxygens.push(point.avgBloodOxygen)
+          times.push(formatMinuteAndSecond(point.time - offsetTime))
+        }
       }
 
       let itemStyle = {

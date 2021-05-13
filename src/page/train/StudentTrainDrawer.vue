@@ -116,7 +116,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import { int32ToBytes, formatTime } from '@/util'
+import { int32ToBytes, formatMinuteAndSecond } from '@/util'
 import StudentTrainList from './StudentTrainList'
 
 export default {
@@ -155,14 +155,17 @@ export default {
       let systolicPressures = []
       let bloodOxygens = []
       let times = []
-      for (let i = 0; i < points.length; i++) {
-        let point = points[i]
-        let vs = int32ToBytes(point.physiology)
-        heartRates.push(vs[0])
-        diastolicPressures.push(vs[1])
-        systolicPressures.push(vs[2])
-        bloodOxygens.push(vs[3])
-        times.push(formatTime(new Date(point.time * 1000)))
+      if (points.length > 0) {
+        let offsetTime = points[0].time
+        for (let i = 0; i < points.length; i++) {
+          let point = points[i]
+          let vs = int32ToBytes(point.physiology)
+          heartRates.push(vs[0])
+          diastolicPressures.push(vs[1])
+          systolicPressures.push(vs[2])
+          bloodOxygens.push(vs[3])
+          times.push(formatMinuteAndSecond(point.time - offsetTime))
+        }
       }
 
       let itemStyle = {

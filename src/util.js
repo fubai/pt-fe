@@ -125,6 +125,18 @@ function formatTime (value) {
   return `${hour}:${minute}:${second}`
 }
 
+function formatMinuteAndSecond (seconds) {
+  let minute = Math.floor(seconds / 60)
+  if (minute == 0) {
+    return `${seconds}s`
+  }
+  let second = seconds % 60
+  if (second == 0) {
+    return `${minute}m`
+  }
+  return `${minute}m${second}s`
+}
+
 function int32ToBytes (value) {
   let bytes = []
   let i = 4
@@ -135,4 +147,4 @@ function int32ToBytes (value) {
   return bytes
 }
 
-export { calcPage, getKey, hasClass, isArray, isObject, isString, isNumber, isDate, isRegExp, isFunction, isJSON, throwError, formatDate, formatTimestamp, formatTime, int32ToBytes }
+export { calcPage, getKey, hasClass, isArray, isObject, isString, isNumber, isDate, isRegExp, isFunction, isJSON, throwError, formatDate, formatTimestamp, formatTime, formatMinuteAndSecond, int32ToBytes }
