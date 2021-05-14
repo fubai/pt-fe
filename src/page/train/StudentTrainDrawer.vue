@@ -115,7 +115,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
 import { int32ToBytes, formatMinuteAndSecond } from '@/util'
 import StudentTrainList from './StudentTrainList'
 
@@ -189,7 +188,7 @@ export default {
         ]
       }
 
-      echarts.init(this.$refs.chart).setOption({
+      this.$echarts.init(this.$refs.chart).setOption({
         tooltip: {
           trigger: 'axis'
         },

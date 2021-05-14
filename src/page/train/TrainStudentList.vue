@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
 import { formatTimestamp, formatMinuteAndSecond } from '@/util'
 
 export default {
@@ -128,7 +127,7 @@ export default {
         }
       }
 
-      echarts.init(this.$refs.chart).setOption({
+      this.$echarts.init(this.$refs.chart).setOption({
         tooltip: {
           trigger: 'axis'
         },

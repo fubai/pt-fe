@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
-
 export default {
   name: 'train-chart',
   methods: {
@@ -26,7 +24,7 @@ export default {
         values.push(dayCount.value)
       }
 
-      echarts.init(this.$refs.chart1).setOption({
+      this.$echarts.init(this.$refs.chart1).setOption({
         tooltip: {
           trigger: 'axis'
         },
@@ -79,7 +77,7 @@ export default {
         values.push(Math.floor(dayCourseItemCompleteRate.value * 100))
       }
 
-      echarts.init(this.$refs.chart2).setOption({
+      this.$echarts.init(this.$refs.chart2).setOption({
         tooltip: {
           trigger: 'axis',
           formatter: '{b}<br>课程完成度: {c}%'
@@ -139,7 +137,7 @@ export default {
         values.push(dayAvgHeartRate.value)
       }
 
-      echarts.init(this.$refs.chart3).setOption({
+      this.$echarts.init(this.$refs.chart3).setOption({
         tooltip: {
           trigger: 'axis'
         },

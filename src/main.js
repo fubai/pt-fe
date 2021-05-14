@@ -34,6 +34,12 @@ import {
   Message,
   MessageBox
 } from 'element-ui'
+
+import * as echarts from 'echarts/core'
+import { LineChart, BarChart } from 'echarts/charts'
+import { TitleComponent, TooltipComponent, GridComponent, LegendComponent, ToolboxComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+
 import router from './router'
 import store from './store'
 import AjaxPlugin from './plugins/ajax'
@@ -88,6 +94,8 @@ Vue.use(BizPlugin)
 Vue.config.productionTip = false
 Vue.component('student-train-drawer', StudentTrainDrawer)
 
+echarts.use([TitleComponent, TooltipComponent, GridComponent, LegendComponent, ToolboxComponent, LineChart, BarChart, CanvasRenderer])
+Vue.prototype.$echarts = echarts
 
 let adminJSON = sessionStorage.getItem('admin')
 if (adminJSON) {
