@@ -85,7 +85,6 @@ export default {
       })
     },
     renderChart (points) {
-      console.dir(points)
       let maxHeartRates = []
       let minHeartRates = []
       let avgHeartRates = []
@@ -119,12 +118,8 @@ export default {
         }
       }
 
-      let itemStyle = {
-        normal: {
-          lineStyle: {
-            width: 1
-          }
-        }
+      let lineStyle = {
+        width: 1
       }
 
       this.$echarts.init(this.$refs.chart).setOption({
@@ -179,73 +174,73 @@ export default {
           name: '平均心率',
           type: 'line',
           data: avgHeartRates,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最大心率',
           type: 'line',
           data: maxHeartRates,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最小心率',
           type: 'line',
           data: minHeartRates,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '平均舒张压',
           type: 'line',
           data: avgDiastolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最大舒张压',
           type: 'line',
           data: maxDiastolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最小舒张压',
           type: 'line',
           data: minDiastolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '平均收缩压',
           type: 'line',
           data: avgSystolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最大收缩压',
           type: 'line',
           data: maxSystolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最小收缩压',
           type: 'line',
           data: minSystolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '平均血氧',
           type: 'line',
           data: avgBloodOxygens,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最大血氧',
           type: 'line',
           data: maxBloodOxygens,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }, {
           name: '最小血氧',
           type: 'line',
           data: minBloodOxygens,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           showSymbol: false
         }]
       })

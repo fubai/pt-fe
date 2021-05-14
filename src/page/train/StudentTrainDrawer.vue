@@ -167,12 +167,8 @@ export default {
         }
       }
 
-      let itemStyle = {
-        normal: {
-          lineStyle: {
-            width: 1
-          }
-        }
+      let lineStyle = {
+        width: 1
       }
 
       let markPoint = {
@@ -233,7 +229,7 @@ export default {
           name: '心率',
           type: 'line',
           data: heartRates,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
           showSymbol: false
@@ -241,7 +237,7 @@ export default {
           name: '舒张压',
           type: 'line',
           data: diastolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
           showSymbol: false
@@ -249,7 +245,7 @@ export default {
           name: '收缩压',
           type: 'line',
           data: systolicPressures,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
           showSymbol: false
@@ -257,7 +253,7 @@ export default {
           name: '血氧',
           type: 'line',
           data: bloodOxygens,
-          itemStyle: itemStyle,
+          lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
           showSymbol: false
