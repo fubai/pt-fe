@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-card class="login-card">
-      <div slot="header">登录</div>
+      <div slot="header">体能训练辅助系统</div>
       <el-form :model="loginForm" :rules="loginFormRule" ref="loginForm" :status-icon="true">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="loginForm.username" prefix-icon="el-icon-mobile-phone" placeholder="请输入用户名" ref="username" :maxlength="40"></el-input>
@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style>
-.login-container{padding-top:0.1px;background:#2fd6a9;height:100vh;}
+.login-container{padding-top:0.1px;background:rgba(33, 43, 71);height:100vh;}
 .login-card{width:600px;margin:8% auto 0;}
 .login-card .el-button{width:100%;margin:0px auto;}
 </style>
