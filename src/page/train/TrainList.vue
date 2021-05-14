@@ -183,6 +183,11 @@ export default {
       this.loadTeacher()
     },
     loadClazz () {
+      if (this.admin.clazzs) {
+        this.clazzs = this.admin.clazzs
+        return
+      }
+
       let schoolId = this.schoolId
       if (!schoolId) {
         this.clazzs = []
