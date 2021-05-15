@@ -7,7 +7,7 @@
       </div>
       <div :class="showBottom !== false ? 'drawer-body' : 'drawer-body1'">
         <div ref="chart" style="width:100%;height:280px"></div>
-        <el-row :gutter="20" class="row-ball">
+        <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
               <span>{{stat.calorie || ''}}</span>
@@ -27,7 +27,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="row-ball">
+        <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
               <span>{{stat.avgHeartRate || ''}}</span>
@@ -47,7 +47,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="row-ball" style="margin-top:20px;">
+        <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
               <span>{{stat.avgDiastolicPressure || ''}}</span>
@@ -67,7 +67,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="row-ball" style="margin-top:20px;">
+        <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
               <span>{{stat.avgSystolicPressure || ''}}</span>
@@ -87,7 +87,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="row-ball" style="margin-top:20px;">
+        <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
               <span>{{stat.avgBloodOxygen || ''}}</span>
@@ -324,12 +324,12 @@ export default {
 .row-ball>.el-col>div{
   position: relative;
   width: 100%;
-  padding-top: calc(100% + 30px);
+  padding-top: calc(100% + 50px);
   height: 0;
 }
 .row-ball>.el-col>div>span{
   position: absolute;
-  top: calc(50% - 27px);
+  top: calc(50% - 35px);
   left:0;
   right:0;
   display: block;
@@ -344,7 +344,7 @@ export default {
   position: absolute;
   left:0;
   right:0;
-  bottom:0;
+  bottom:15px;
   display: block;
   text-align: center;
   height: 18px;
@@ -358,10 +358,10 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 30px;
+  bottom: 50px;
   left: 0;
   background-color: #0094ff;
-  background: radial-gradient(circle at 75% 25%, #45b97c, #0c212b);
+  background: radial-gradient(circle at 75% 25%, #45b97c, #00ae9d);
   border-radius: 50%;
 }
 </style>
