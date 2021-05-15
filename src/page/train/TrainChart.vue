@@ -8,9 +8,6 @@
 
 <script>
 const color = '#ed1941'
-const lineStyle = {
-  color: color
-}
 export default {
   name: 'train-chart',
   methods: {
