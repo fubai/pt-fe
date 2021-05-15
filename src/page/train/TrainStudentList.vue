@@ -175,72 +175,84 @@ export default {
           type: 'line',
           data: avgHeartRates,
           lineStyle: lineStyle,
+          color: '#ed1941',
           showSymbol: false
         }, {
           name: '最大心率',
           type: 'line',
           data: maxHeartRates,
           lineStyle: lineStyle,
+          color: '#ef4136',
           showSymbol: false
         }, {
           name: '最小心率',
           type: 'line',
           data: minHeartRates,
           lineStyle: lineStyle,
+          color: '#840228',
           showSymbol: false
         }, {
           name: '平均舒张压',
           type: 'line',
           data: avgDiastolicPressures,
           lineStyle: lineStyle,
+          color: '#444693',
           showSymbol: false
         }, {
           name: '最大舒张压',
           type: 'line',
           data: maxDiastolicPressures,
           lineStyle: lineStyle,
+          color: '#2a5caa',
           showSymbol: false
         }, {
           name: '最小舒张压',
           type: 'line',
           data: minDiastolicPressures,
           lineStyle: lineStyle,
+          color: '#102b6a',
           showSymbol: false
         }, {
           name: '平均收缩压',
           type: 'line',
           data: avgSystolicPressures,
           lineStyle: lineStyle,
+          color: '#fcaf17',
           showSymbol: false
         }, {
           name: '最大收缩压',
           type: 'line',
           data: maxSystolicPressures,
           lineStyle: lineStyle,
+          color: '#ffe600',
           showSymbol: false
         }, {
           name: '最小收缩压',
           type: 'line',
           data: minSystolicPressures,
           lineStyle: lineStyle,
+          color: '#dec674',
           showSymbol: false
         }, {
           name: '平均血氧',
           type: 'line',
           data: avgBloodOxygens,
           lineStyle: lineStyle,
+          color: '#1d953f',
           showSymbol: false
         }, {
           name: '最大血氧',
           type: 'line',
           data: maxBloodOxygens,
           lineStyle: lineStyle,
+          color: '#225a1f',
           showSymbol: false
         }, {
           name: '最小血氧',
           type: 'line',
           data: minBloodOxygens,
           lineStyle: lineStyle,
+          color: '#006c54',
           showSymbol: false
         }]
       })

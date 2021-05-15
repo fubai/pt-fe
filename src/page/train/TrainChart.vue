@@ -7,6 +7,10 @@
 </template>
 
 <script>
+const color = '#ed1941'
+const lineStyle = {
+  color: color
+}
 export default {
   name: 'train-chart',
   methods: {
@@ -64,6 +68,7 @@ export default {
           name: '上课数量',
           type: 'line',
           data: values,
+          color: color,
           showSymbol: dates.length < 2
         }]
       })
@@ -124,6 +129,7 @@ export default {
           name: '课程完成度',
           type: 'bar',
           barWidth: '12%',
+          color: color,
           data: values
         }]
       })
@@ -176,6 +182,7 @@ export default {
           name: '平均心率',
           type: 'line',
           data: values,
+          color: color,
           showSymbol: dates.length < 2
         }]
       })

@@ -232,6 +232,7 @@ export default {
           lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
+          color: '#ed1941',
           showSymbol: false
         }, {
           name: '舒张压',
@@ -240,6 +241,7 @@ export default {
           lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
+          color: '#444693',
           showSymbol: false
         }, {
           name: '收缩压',
@@ -248,6 +250,7 @@ export default {
           lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
+          color: '#fcaf17',
           showSymbol: false
         }, {
           name: '血氧',
@@ -256,6 +259,7 @@ export default {
           lineStyle: lineStyle,
           markPoint: markPoint,
           markLine: markLine,
+          color: '#1d953f',
           showSymbol: false
         }]
       })
