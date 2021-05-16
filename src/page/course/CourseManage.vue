@@ -26,8 +26,8 @@
       <el-table-column prop="updateTime" label="最后更新时间" width="145px" sortable></el-table-column>
       <el-table-column fixed="right" label="操作" width="158">
         <template slot-scope="scope">
-          <el-button @click="toUpdate(scope.row)" type="primary" size="small">修改</el-button>
-          <el-button @click="toDelete(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button @click="toUpdate(scope.row)" type="primary" size="small" v-if="hasPermission(scope.row)">修改</el-button>
+          <el-button @click="toDelete(scope.row)" type="danger" size="small" v-if="hasPermission(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,6 +101,17 @@ export default {
         desc: [{ required: true, message: '请输入课程描述', trigger: 'blur' }]
       },
       currentUpdateCourseId: 0
+    }
+  },
+  computed: {
+    admin () {
+      return this.$store.state.admin
+    },
+    schoolId () {
+      return this.admin.schoolId
+    },
+    teacherId () {
+      return this.admin.teacherId
     }
   },
   created () {
@@ -238,6 +249,18 @@ export default {
         }
       }
       return content
+    },
+    hasPermission (row) {
+      if (!this.schoolId && !this.teacherId) {
+        return true
+      }
+      if (this.teacherId) {
+        return row.teacherId === this.teacherId
+      }
+      if (this.schoolId) {
+        return row.schoolId === this.schoolId
+      }
+      return false
     }
   }
 }

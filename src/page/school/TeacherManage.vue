@@ -44,7 +44,7 @@
         <el-form-item label="老师手机" prop="phone">
           <el-input v-model="form.phone" placeholder="请输入老师手机" :maxlength="20"></el-input>
         </el-form-item>
-        <el-form-item label="学校" prop="schoolId">
+        <el-form-item label="学校" prop="schoolId" v-if="!schoolId">
           <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool" :loading="seachingSchool" style="width:100%">
             <el-option v-for="school in schools" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
           </el-select>
@@ -127,6 +127,14 @@ export default {
       currentUpdatePasswordTeacherId: 0
     }
   },
+  computed: {
+    admin () {
+      return this.$store.state.admin
+    },
+    schoolId () {
+      return this.admin.schoolId
+    }
+  },
   created () {
     this.load(1)
   },
@@ -160,34 +168,48 @@ export default {
       })
     },
     toAdd () {
-      this.searchSchool('', () => {
-        this.formTitle = '添加老师'
-        this.currentUpdateTeacherId = 0
-        this.form = {
-          name: '',
-          phone: '',
-          schoolId: ''
-        }
-        this.$nextTick(() => {
-          this.$refs.form.clearValidate()
+      if (this.schoolId) {
+        this.toAdd1()
+      } else {
+        this.searchSchool('', () => {
+          this.toAdd1()
         })
-        this.showForm = true
+      }
+    },
+    toAdd1 () {
+      this.formTitle = '添加老师'
+      this.currentUpdateTeacherId = 0
+      this.form = {
+        name: '',
+        phone: '',
+        schoolId: this.schoolId
+      }
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
       })
+      this.showForm = true
     },
     toUpdate (row) {
-      this.searchSchool(row.schoolName, () => {
-        this.formTitle = '修改老师'
-        this.currentUpdateTeacherId = row.teacherId
-        this.form = {
-          name: row.name,
-          phone: row.phone,
-          schoolId: row.schoolId
-        }
-        this.$nextTick(() => {
-          this.$refs.form.clearValidate()
+      if (this.schoolId) {
+        this.toUpdate1(row)
+      } else {
+        this.searchSchool(row.schoolName, () => {
+          this.toUpdate1(row)
         })
-        this.showForm = true
+      }
+    },
+    toUpdate1 (row) {
+      this.formTitle = '修改老师'
+      this.currentUpdateTeacherId = row.teacherId
+      this.form = {
+        name: row.name,
+        phone: row.phone,
+        schoolId: row.schoolId
+      }
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
       })
+      this.showForm = true
     },
     toDelete (row) {
       this.$confirm('您确认要删除该老师吗?', '提示', {

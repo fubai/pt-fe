@@ -4,7 +4,7 @@
       <div class="item left">
         <el-button size="small" @click="toAdd" type="primary">添加班级</el-button>
       </div>
-      <div class="item">
+      <div class="item" v-if="!schoolId">
         <label>学校</label>
         <el-select size="small" placeholder="请选择学校" v-model="query.schoolId" filterable remote :remote-method="searchSchool1" :loading="seachingSchool1" clearable style="width:100%">
           <el-option v-for="school in schools1" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
@@ -42,7 +42,7 @@
 
     <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
-        <el-form-item label="学校" prop="schoolId">
+        <el-form-item label="学校" prop="schoolId" v-if="!schoolId">
           <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool2" :loading="seachingSchool2" style="width:100%" :disabled="!!currentUpdateClazzId" @change="onSchoolChange">
             <el-option v-for="school in schools2" :key="school.schoolId" :label="school.name" :value="school.schoolId"></el-option>
           </el-select>
@@ -129,19 +129,29 @@ export default {
       clazzOfStudent: {}
     }
   },
+  computed: {
+    admin () {
+      return this.$store.state.admin
+    },
+    schoolId () {
+      return this.admin.schoolId
+    }
+  },
   created () {
     Vue.biz.loadDictionary(DICTIONARY_ID_GRADE, (grades) => {
       this.grades = grades
       this.load(1)
     })
-    this.searchSchool1()
+    if (!this.schoolId) {
+      this.searchSchool1()
+    }
   },
   methods: {
     load (page) {
       this.loading = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/clazzs?page=${page}&limit=${this.query.limit}&name=${this.query.name || ''}&schoolId=${this.query.schoolId || ''}`
+        url: `/web/api/clazzs?page=${page}&limit=${this.query.limit}&name=${this.query.name || ''}&schoolId=${this.schoolId || this.query.schoolId || ''}`
       }).then((res) => {
         let pageData = res.data.data
         let clazzs = pageData.data
@@ -192,7 +202,7 @@ export default {
       this.seachingTeacher = true
       this.$http.request({
         method: 'get',
-        url: `/web/api/teachers?page=1&limit=10&name=${query || ''}&schoolId=${this.form.schoolId || ''}`
+        url: `/web/api/teachers?page=1&limit=10&name=${query || ''}&schoolId=${this.schoolId || this.form.schoolId || ''}`
       }).then((res) => {
         this.teachers = res.data.data.data
         this.seachingTeacher = false
@@ -201,21 +211,29 @@ export default {
       })
     },
     toAdd () {
-      this.searchSchool2('', () => {
-        this.formTitle = '添加班级'
-        this.currentUpdateClazzId = 0
-        this.form = {
-          schoolId: null,
-          grade: null,
-          name: '',
-          teacherId: null,
-          maxHeartRateThreshold: 200
-        }
-        this.$nextTick(() => {
-          this.$refs.form.clearValidate()
+      if (this.schoolId) {
+        this.toAdd1()
+        this.searchTeacher()
+      } else {
+        this.searchSchool2('', () => {
+          this.toAdd1()
         })
-        this.showForm = true
+      }
+    },
+    toAdd1 () {
+      this.formTitle = '添加班级'
+      this.currentUpdateClazzId = 0
+      this.form = {
+        schoolId: this.schoolId,
+        grade: null,
+        name: '',
+        teacherId: null,
+        maxHeartRateThreshold: 200
+      }
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate()
       })
+      this.showForm = true
     },
     toUpdate (row) {
       this.schools2 = [{ schoolId: row.schoolId, name: row.schoolName }]
