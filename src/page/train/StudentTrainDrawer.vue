@@ -10,19 +10,19 @@
         <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
-              <span>{{stat.calorie || ''}}</span>
+              <span>{{stat.calorie || '-'}}</span>
               <p>卡路里</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.distance || ''}}</span>
+              <span>{{stat.distance || '-'}}</span>
               <p>运动距离</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.stepCount || ''}}</span>
+              <span>{{stat.stepCount || '-'}}</span>
               <p>步数</p>
             </div>
           </el-col>
@@ -30,19 +30,19 @@
         <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
-              <span>{{stat.avgHeartRate || ''}}</span>
+              <span>{{stat.avgHeartRate || '-'}}</span>
               <p>平均心率</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.maxHeartRate || ''}}</span>
+              <span>{{stat.maxHeartRate || '-'}}</span>
               <p>最大心率</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.minHeartRate || ''}}</span>
+              <span>{{stat.minHeartRate || '-'}}</span>
               <p>最小心率</p>
             </div>
           </el-col>
@@ -50,19 +50,19 @@
         <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
-              <span>{{stat.avgDiastolicPressure || ''}}</span>
+              <span>{{stat.avgDiastolicPressure || '-'}}</span>
               <p>平均舒张压</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.maxDiastolicPressure || ''}}</span>
+              <span>{{stat.maxDiastolicPressure || '-'}}</span>
               <p>最大舒张压</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.minDiastolicPressure || ''}}</span>
+              <span>{{stat.minDiastolicPressure || '-'}}</span>
               <p>最小舒张压</p>
             </div>
           </el-col>
@@ -70,19 +70,19 @@
         <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
-              <span>{{stat.avgSystolicPressure || ''}}</span>
+              <span>{{stat.avgSystolicPressure || '-'}}</span>
               <p>平均收缩压</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.maxSystolicPressure || ''}}</span>
+              <span>{{stat.maxSystolicPressure || '-'}}</span>
               <p>最大收缩压</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.minSystolicPressure || ''}}</span>
+              <span>{{stat.minSystolicPressure || '-'}}</span>
               <p>最小收缩压</p>
             </div>
           </el-col>
@@ -90,19 +90,19 @@
         <el-row :gutter="60" class="row-ball" style="margin-top:20px;">
           <el-col :span="8">
             <div>
-              <span>{{stat.avgBloodOxygen || ''}}</span>
+              <span>{{stat.avgBloodOxygen || '-'}}</span>
               <p>平均血氧</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.maxBloodOxygen || ''}}</span>
+              <span>{{stat.maxBloodOxygen || '-'}}</span>
               <p>最大血氧</p>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <span>{{stat.minBloodOxygen || ''}}</span>
+              <span>{{stat.minBloodOxygen || '-'}}</span>
               <p>最小血氧</p>
             </div>
           </el-col>
