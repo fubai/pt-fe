@@ -73,7 +73,7 @@
 
 <script>
 import Vue from 'vue'
-import { calcPage } from '@/util'
+import { calcPage, getDurationText } from '@/util'
 import { DICTIONARY_ID_TRAIN } from '@/config'
 
 export default {
@@ -232,14 +232,7 @@ export default {
       course.durationText = this.getDurationText(duration)
     },
     getDurationText (duration) {
-      let second = duration || 0
-      let minute = second / 60
-      second = second % 60
-      if (second == 0) {
-        return `${minute}分钟`
-      } else {
-        return `${minute}分钟${second}秒`
-      }
+      return getDurationText(duration)
     },
     getContentName (content) {
       for (let i = 0; i < this.trainingItems.length; i++) {

@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { int32ToBytes, formatMinuteAndSecond } from '@/util'
+import { int32ToBytes, formatMinuteAndSecond, getDurationText } from '@/util'
 import StudentTrainList from './StudentTrainList'
 
 export default {
@@ -268,20 +268,7 @@ export default {
       this.$refs.studentTrainList.open(this.schoolId, this.stat)
     },
     getDurationText (duration) {
-      if (duration === 0) {
-        return '0秒'
-      }
-      if (!duration) {
-        return ''
-      }
-
-      if (duration < 60) {
-        return `${duration}秒`
-      }
-
-      let minute = Math.floor(duration / 60)
-      let second = duration % 60
-      return second != 0 ? `${minute}分钟 ${second}秒` : `${minute}分钟`
+      return getDurationText(duration)
     }
   }
 }

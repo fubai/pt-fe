@@ -31,14 +31,14 @@
       <el-table-column prop="stepCount" label="步数" width="70px" sortable></el-table-column>
       <el-table-column prop="distance" label="运动距离" width="95px" sortable></el-table-column>
       <el-table-column prop="calorie" label="卡路里" width="85px" sortable></el-table-column>
-      <el-table-column prop="duration" label="运动量" width="85px" sortable></el-table-column>
+      <el-table-column prop="duration" label="运动量" width="85px" sortable :formatter="durationFormatter"></el-table-column>
     </el-table>
     <student-train-drawer ref="studentTrainDrawer"></student-train-drawer>
   </div>
 </template>
 
 <script>
-import { formatTimestamp, formatMinuteAndSecond } from '@/util'
+import { formatTimestamp, formatMinuteAndSecond, getDurationText } from '@/util'
 
 export default {
   name: 'train-student-list',
@@ -264,6 +264,9 @@ export default {
       let startTime = formatTimestamp(new Date(training.startTime * 1000))
       let endTime = formatTimestamp(new Date(training.endTime * 1000))
       return `${startTime.substring(0, 16)} ~ ${endTime.substring(10, 16)}`
+    },
+    durationFormatter (row) {
+      return getDurationText(row.duration)
     }
   }
 }

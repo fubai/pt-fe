@@ -137,6 +137,23 @@ function formatMinuteAndSecond (seconds) {
   return `${minute}m${second}s`
 }
 
+function getDurationText (duration) {
+  if (duration === 0) {
+    return '0秒'
+  }
+  if (!duration) {
+    return ''
+  }
+
+  if (duration < 60) {
+    return `${duration}秒`
+  }
+
+  let minute = Math.floor(duration / 60)
+  let second = duration % 60
+  return second != 0 ? `${minute}分钟${second}秒` : `${minute}分钟`
+}
+
 function int32ToBytes (value) {
   let bytes = []
   let i = 4
@@ -147,4 +164,4 @@ function int32ToBytes (value) {
   return bytes
 }
 
-export { calcPage, getKey, hasClass, isArray, isObject, isString, isNumber, isDate, isRegExp, isFunction, isJSON, throwError, formatDate, formatTimestamp, formatTime, formatMinuteAndSecond, int32ToBytes }
+export { calcPage, getKey, hasClass, isArray, isObject, isString, isNumber, isDate, isRegExp, isFunction, isJSON, throwError, formatDate, formatTimestamp, formatTime, formatMinuteAndSecond, getDurationText, int32ToBytes }
