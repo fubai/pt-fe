@@ -116,7 +116,9 @@ export default {
   },
   created () {
     this.load(1)
-    this.searchSchool1()
+    if (!this.schoolId) {
+      this.searchSchool1()
+    }
   },
   methods: {
     load (page) {
