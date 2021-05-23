@@ -25,7 +25,7 @@
     <el-dialog :title="formTitle" :visible.sync="showForm" width="360px" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入姓名" :maxlength="40"></el-input>
+          <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="form.gender">
@@ -73,7 +73,10 @@ export default {
         birthday: null
       },
       formRule: {
-        name: [{ required: true, message: '请输入学生姓名', trigger: 'blur' }],
+        name: [
+          { required: true, message: '请输入学生姓名', trigger: 'blur' },
+          { min: 1, max: 10, message: '最短1个字符，最长10个字符', trigger: 'blur' }
+        ],
         gender: [{ required: true, message: '请选择学生性别', trigger: 'change' }],
         birthday: [{ required: true, message: '请选择学生出生日期', trigger: 'change' }]
       },

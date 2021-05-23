@@ -47,10 +47,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="场地" prop="name">
-          <el-input v-model="form.name" placeholder="请输入场地名称" :maxlength="40"></el-input>
+          <el-input v-model="form.name" placeholder="请输入场地名称"></el-input>
         </el-form-item>
         <el-form-item label="蓝牙网关MAC地址" prop="bluetoothGatewayMac">
-          <el-input v-model="form.bluetoothGatewayMac" placeholder="请输入蓝牙网关MAC地址" :maxlength="20"></el-input>
+          <el-input v-model="form.bluetoothGatewayMac" placeholder="请输入蓝牙网关MAC地址"></el-input>
         </el-form-item>
         <el-form-item label="背景图" prop="bgImageUrl">
           <el-input v-model="form.bgImageUrl" placeholder="请输入背景图地址" :maxlength="200"></el-input>
@@ -100,8 +100,14 @@ export default {
       },
       formRule: {
         schoolId: [{ required: true, message: '请选择学校', trigger: 'change' }],
-        name: [{ required: true, message: '请输入场地名称', trigger: 'blur' }],
-        bluetoothGatewayMac: [{ required: true, message: '请输入蓝牙网关MAC地址', trigger: 'blur' }]
+        name: [
+          { required: true, message: '请输入场地名称', trigger: 'blur' },
+          { max: 15, message: '最多15个字符', trigger: 'blur' }
+        ],
+        bluetoothGatewayMac: [
+          { required: true, message: '请输入蓝牙网关MAC地址', trigger: 'blur' },
+          { min: 12, max: 12, message: '长度是12个字符', trigger: 'blur' }
+        ]
       },
       currentUpdateFieldId: 0
     }

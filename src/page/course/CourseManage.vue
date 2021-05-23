@@ -97,8 +97,14 @@ export default {
         items: []
       },
       formRule: {
-        name: [{ required: true, message: '请输入课程名称', trigger: 'blur' }],
-        desc: [{ required: true, message: '请输入课程描述', trigger: 'blur' }]
+        name: [
+          { required: true, message: '请输入课程名称', trigger: 'blur' },
+          { max: 20, message: '最多20个字符', trigger: 'blur' }
+        ],
+        desc: [
+          { required: true, message: '请输入课程描述', trigger: 'blur' },
+          { max: 40, message: '最多40个字符', trigger: 'blur' }
+        ]
       },
       currentUpdateCourseId: 0
     }

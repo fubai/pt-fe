@@ -53,7 +53,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="班级" prop="name">
-          <el-input v-model="form.name" placeholder="请输入班级名称" :maxlength="40"></el-input>
+          <el-input v-model="form.name" placeholder="请输入班级名称"></el-input>
         </el-form-item>
         <el-form-item label="老师" prop="teacherId">
           <el-select v-model="form.teacherId" placeholder="请选择老师" filterable remote :remote-method="searchTeacher" :loading="seachingTeacher" style="width:100%">
@@ -120,7 +120,10 @@ export default {
       formRule: {
         schoolId: [{ required: true, message: '请选择学校', trigger: 'change' }],
         grade: [{ required: true, message: '请选择年级', trigger: 'change' }],
-        name: [{ required: true, message: '请输入班级名称', trigger: 'blur' }],
+        name: [
+          { required: true, message: '请输入班级名称', trigger: 'blur' },
+          { max: 10, message: '最多10个字符', trigger: 'blur' }
+        ],
         teacherId: [{ required: true, message: '请选择老师', trigger: 'change' }],
         maxHeartRateThreshold: [{ required: true, message: '请输入最大心率报警阈值', trigger: 'blur' }]
       },

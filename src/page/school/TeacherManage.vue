@@ -39,10 +39,10 @@
     <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="老师姓名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入老师姓名" :maxlength="40"></el-input>
+          <el-input v-model="form.name" placeholder="请输入老师姓名"></el-input>
         </el-form-item>
         <el-form-item label="老师手机" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入老师手机" :maxlength="20"></el-input>
+          <el-input v-model="form.phone" placeholder="请输入老师手机"></el-input>
         </el-form-item>
         <el-form-item label="学校" prop="schoolId" v-if="!schoolId">
           <el-select v-model="form.schoolId" placeholder="请选择学校" filterable remote :remote-method="searchSchool" :loading="seachingSchool" style="width:100%">
@@ -97,7 +97,10 @@ export default {
         schoolId: null
       },
       formRule: {
-        name: [{ required: true, message: '请输入老师姓名', trigger: 'blur' }],
+        name: [
+          { required: true, message: '请输入老师姓名', trigger: 'blur' },
+          { min: 1, max: 10, message: '最短1个字符，最长10个字符', trigger: 'blur' }
+        ],
         phone: [
           { required: true, message: '请输入老师手机', trigger: 'blur' },
           { min: 11, max: 11, message: '长度必须是11位', trigger: 'blur' },

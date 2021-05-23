@@ -31,16 +31,16 @@
     <el-dialog :title="formTitle" :visible.sync="showForm" append-to-body>
       <el-form :model="form" :rules="formRule" ref="form" :status-icon="true" label-position="top">
         <el-form-item label="学校名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入学校名称" :maxlength="40"></el-input>
+          <el-input v-model="form.name" placeholder="请输入学校名称"></el-input>
         </el-form-item>
         <el-form-item label="联系人" prop="linker">
-          <el-input v-model="form.linker" placeholder="请输入联系人" :maxlength="20"></el-input>
+          <el-input v-model="form.linker" placeholder="请输入联系人"></el-input>
         </el-form-item>
         <el-form-item label="联系人电话" prop="linkerPhone">
-          <el-input v-model="form.linkerPhone" placeholder="请输入联系人电话" :maxlength="20"></el-input>
+          <el-input v-model="form.linkerPhone" placeholder="请输入联系人电话"></el-input>
         </el-form-item>
         <el-form-item label="联系人职务" prop="post">
-          <el-input v-model="form.post" placeholder="请输入联系人职务" :maxlength="20"></el-input>
+          <el-input v-model="form.post" placeholder="请输入联系人职务"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
@@ -82,8 +82,14 @@ export default {
         status: 'ENABLE'
       },
       formRule: {
-        name: [{ required: true, message: '请输入学校名称', trigger: 'blur' }],
-        linker: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
+        name: [
+          { required: true, message: '请输入学校名称', trigger: 'blur' },
+          { min: 2, max: 20, message: '最短2个字符，最长20个字符', trigger: 'blur' }
+        ],
+        linker: [
+          { required: true, message: '请输入联系人', trigger: 'blur' },
+          { min: 1, max: 10, message: '最短1个字符，最长10个字符', trigger: 'blur' }
+        ],
         linkerPhone: [
           { required: true, message: '请输入联系人电话', trigger: 'blur' },
           { min: 11, max: 11, message: '长度必须是11位', trigger: 'blur' },
@@ -99,7 +105,10 @@ export default {
             }
           }
         ],
-        post: [{ required: true, message: '请输入联系人职务', trigger: 'blur' }]
+        post: [
+          { required: true, message: '请输入联系人职务', trigger: 'blur' },
+          { min: 1, max: 20, message: '最短1个字符，最长20个字符', trigger: 'blur' }
+        ]
       },
       currentUpdateSchoolId: 0
     }

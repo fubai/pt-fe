@@ -1,14 +1,14 @@
 <template>
   <el-dialog :title="`${field.schoolName} ${field.name}`" :visible.sync="show" width="580px" append-to-body :close-on-click-modal="false">
     <el-table :data="equipments" row-key="key" :stripe="true" border size="mini" v-loading="loading">
-      <el-table-column prop="num" label="编号">
+      <el-table-column prop="num" label="编号（最短2个字符，最长6个字符）">
         <template slot-scope="scope">
-          <el-input placeholder="请输入设备编号" v-model="scope.row.num" size="mini"></el-input>
+          <el-input placeholder="请输入设备编号" v-model="scope.row.num" size="mini" :maxlength="6"></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="mac" label="蓝牙MAC地址">
+      <el-table-column prop="mac" label="蓝牙MAC地址（长度为12）">
         <template slot-scope="scope">
-          <el-input placeholder="请输入设备的蓝牙MAC地址" v-model="scope.row.mac" size="mini"></el-input>
+          <el-input placeholder="请输入设备的蓝牙MAC地址" v-model="scope.row.mac" size="mini" :maxlength="12"></el-input>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="78">
@@ -79,8 +79,16 @@ export default {
           this.$message.error(`请填写设备编号`)
           return
         }
+        if (num.length < 2 || num.length > 6) {
+          this.$message.error(`设备编号长度不能小于2，不能大于6`)
+          return
+        }
         if (!mac) {
           this.$message.error(`请填写设备的蓝牙MAC地址`)
+          return
+        }
+        if (mac.length != 12) {
+          this.$message.error(`MAC地址的长度必须为12`)
           return
         }
         if (numMap[num]) {
